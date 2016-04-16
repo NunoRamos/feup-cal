@@ -10,16 +10,24 @@
 
 using namespace std;
 
-class Edge;
+#include "Coordinates.h"
+#include <iostream>
 
-template <class T>
 class Node{
 
 	long id;
-	int lat, lon;
-	Edge* roads;
+	Coordinates* coords;
+	Point* point;
+	bool destination;
+	string name;
+
+public:
+	Node(long id, Coordinates *coords, Point *point, bool destination, string name);
+	long getId();
+	Coordinates getCoordinates();
+	Point getPoint();
+	bool isDestination();
+	string getName();
 };
-
-
 
 #endif /* SRC_NODE_H_ */

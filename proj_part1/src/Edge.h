@@ -9,17 +9,25 @@
 #define SRC_EDGE_H_
 
 #include "Node.h"
+#include <iostream>
 
 using namespace std;
 
+
 class Edge{
 
-	Node* node1, node2;
-	bool isTwoWay;
+	long id;
+	Node* nodeFrom, *nodeTo;
+	bool twoWay;
 	string name;
 
+public:
+	Edge(long id, string name, bool twoWay);
+	Node getFrom();
+	Node getTo();
+	bool isTwoWay();
+	string getName();
 };
-
 
 
 #endif /* SRC_EDGE_H_ */
