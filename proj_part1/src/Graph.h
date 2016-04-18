@@ -33,6 +33,7 @@ public:
 class Edge{
 	Node *dest;
 	Road *road;
+	float weight;
 public:
 	Edge(Road *road);
 	Road getRoad() const;
