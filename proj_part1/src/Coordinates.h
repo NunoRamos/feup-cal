@@ -1,17 +1,21 @@
+#include <cmath>
+
 class Coordinates{
-	float lon,lat;
+	double lon,lat;
 
 public:
-	Coordinates(float lon, float lat);
-	float getLongitude();
-	float getLatitude();
+	Coordinates(double lon, double lat);
+	double getLongitude() const;
+	double getLatitude() const;
 };
 
 class Point{
-	float x, y;
+	double x, y;
 
 public:
-	Point(float x, float y);
-	float getX();
-	float getY();
+	Point(double x, double y);
+	double getX() const;
+	double getY() const;
 };
+
+double getDistance(const Coordinates c1,const Coordinates c2);

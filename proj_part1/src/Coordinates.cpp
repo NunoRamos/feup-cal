@@ -7,29 +7,35 @@
 
 #include "Coordinates.h"
 
-Coordinates::Coordinates(float lon, float lat){
+Coordinates::Coordinates(double lon, double lat){
 	this->lon = lon;
 	this->lat = lat;
 }
 
-float Coordinates::getLatitude(){
+double Coordinates::getLatitude() const{
 	return lat;
 }
 
-float Coordinates::getLongitude(){
+double Coordinates::getLongitude() const{
 	return lon;
 }
 
 
-Point::Point(float x, float y){
+Point::Point(double x, double y){
 	this->x = x;
 	this->y = y;
 }
 
-float Point::getX(){
+double Point::getX() const{
 	return x;
 }
 
-float Point::getY(){
+double Point::getY() const{
 	return y;
+}
+
+double getDistance(const Coordinates c1,const Coordinates c2){
+
+	return sqrt((c1.getLatitude() - c2.getLatitude())*(c1.getLatitude() - c2.getLatitude()) *
+			(c1.getLongitude() -c1.getLongitude()) * (c1.getLongitude() - c1.getLongitude()));
 }

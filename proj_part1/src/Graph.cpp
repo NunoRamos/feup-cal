@@ -38,6 +38,12 @@ Road Edge::getRoad() const{
 	return *road;
 }
 
+void Edge::setDest(Node *from, Node *to){
+	this->dest = to;
+	this->weight = getDistance(from->getCoordinates(), to->getCoordinates());
+}
+
+
 //******NODE************
 
 /**

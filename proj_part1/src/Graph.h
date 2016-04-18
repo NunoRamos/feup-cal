@@ -33,7 +33,7 @@ public:
 class Edge{
 	Node *dest;
 	Road *road;
-	float weight;
+	float weight; //"length" of the road
 public:
 	Edge(Road *road);
 	Road getRoad() const;
@@ -54,7 +54,7 @@ public:
 	Coordinates getCoordinates();
 	Point getPoint();
 	bool wasVisited();
-	bool addEdge(Node *n);
+	bool addEdgeTo(Node *n);
 	bool removeEdgeTo(Node *n);
 };
 
