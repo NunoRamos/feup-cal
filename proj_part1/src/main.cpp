@@ -140,11 +140,13 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 		string buff;
 		stringstream ss;
 
+		bool twoway;
 		long edgeID, nodeFromID, nodeToID;
+		Node *nodeFrom, *nodeTo;
 
 		if (getline(file, buff, ';')){
 			ss << buff;
-			ss >> edgeID
+			ss >> edgeID;
 			ss.clear();
 		}
 
@@ -161,8 +163,34 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 		}
 
 		for(int i = 0; i<roads.size(); i++){
-			if (roads[i]->getID() == edgeID)
+			if (roads[i]->getID() == edgeID){
+				twoway = roads[i]->isTwoWay();
 				Edge *newEdge = new Edge(roads[i]);
+			}
+		}
+
+		for(int i = 0; i<nodes.size(); i++){
+			if(nodes[i]->getId() == nodeFromID)
+				nodeFrom = nodes[i];
+
+			if(nodes[i]->getId() == nodeToID)
+				nodeTo = nodes[i];
+		}
+
+		if(nodeFrom == NULL){
+			cout << "nodeFrom from not found\n";
+			continue;
+		}
+
+		if(nodeTo == NULL){
+			cout << "nodeTo not found\n";
+			continue;
+		}
+
+		nodeFrom->addEdge(nodeTo);
+
+		if(twoway){
+			nodeTo->addEdge(nodeFrom);
 		}
 
 
@@ -178,7 +206,7 @@ int main(void) {
 	nodeVec = readNodes("nodes.txt");
 	roadVec = readRoads("roads.txt");
 
-	//readEdges("subroads.txt", nodeVec, roadVec);
+	readEdges("subroads.txt", nodeVec, roadVec);
 
 	/*for(unsigned int i = 0; i< EdgeVec.size(); i++){ FIXME remove
 	 if(EdgeVec[i]->getName() != "")

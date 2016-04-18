@@ -17,12 +17,16 @@ Road::Road(long id, string name, bool twoWay){
 }
 
 
-string Road::getName(){
+string Road::getName() const{
 	return name;
 }
 
-long Road::getID(){
+long Road::getID() const{
 	return id;
+}
+
+bool Road::isTwoWay() const{
+	return twoWay;
 }
 
 //******EDGE************
@@ -30,6 +34,9 @@ Edge::Edge(Road *road){
 	this->road = road;
 }
 
+Road Edge::getRoad() const{
+	return *road;
+}
 
 //******NODE************
 

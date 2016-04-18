@@ -24,8 +24,9 @@ class Road{
 
 public:
 	Road(long id,std::string name,bool twoWay);
-	long getID();
-	std::string getName();
+	long getID() const;
+	std::string getName() const;
+	bool isTwoWay() const;
 	friend class Edge;
 };
 
@@ -34,6 +35,7 @@ class Edge{
 	Road *road;
 public:
 	Edge(Road *road);
+	Road getRoad() const;
 	friend class Node;
 	void setDest(Node *dest);
 };
