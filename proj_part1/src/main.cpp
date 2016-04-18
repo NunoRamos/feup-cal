@@ -28,7 +28,7 @@ vector<Node *> readNodes(const char* filename) {
 	if (file.is_open()) {
 
 		long id;
-		float lat, lon, x, y;
+		double lat, lon, x, y;
 		string file_buf;
 
 		while (!file.eof()) {
@@ -139,6 +139,7 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 
 		string buff;
 		stringstream ss;
+		Edge *newEdge = NULL;
 
 		bool twoway;
 		long edgeID, nodeFromID, nodeToID;
@@ -165,7 +166,7 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 		for(int i = 0; i<roads.size(); i++){
 			if (roads[i]->getID() == edgeID){
 				twoway = roads[i]->isTwoWay();
-				Edge *newEdge = new Edge(roads[i]);
+				newEdge = new Edge(roads[i]);
 			}
 		}
 
@@ -187,10 +188,10 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 			continue;
 		}
 
-		nodeFrom->addEdge(nodeTo);
+		nodeFrom->addEdgeTo(nodeTo, newEdge);
 
 		if(twoway){
-			nodeTo->addEdge(nodeFrom);
+			nodeTo->addEdgeTo(nodeFrom, newEdge);
 		}
 
 

@@ -38,7 +38,7 @@ public:
 	Edge(Road *road);
 	Road getRoad() const;
 	friend class Node;
-	void setDest(Node *dest);
+	void setDest(Node *from,Node *to);
 };
 
 class Node{
@@ -54,7 +54,7 @@ public:
 	Coordinates getCoordinates();
 	Point getPoint();
 	bool wasVisited();
-	bool addEdgeTo(Node *n);
+	bool addEdgeTo(Node *n, Edge *e);
 	bool removeEdgeTo(Node *n);
 };
 
