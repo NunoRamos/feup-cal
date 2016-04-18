@@ -1,11 +1,11 @@
 #include "Reservation.h"
 
-Reservation::Reservation(Node destination, string arrivalTime){
+Reservation::Reservation(Node *destination, string arrivalTime){
 	this->destination = destination;
 	this->arrivalTime = arrivalTime;
 }
 
-Node Reservation::getDestination(){
+Node *Reservation::getDestination(){
 	return destination;
 }
 

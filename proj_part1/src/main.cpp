@@ -231,7 +231,9 @@ int main(void) {
 	cout << "exited..\n";
 
 	for(unsigned int i = 0; i< nodeVec.size(); i++){ //FIXME remove
-		cout<<nodeVec[i]->adj.size()<<endl;
+		for(unsigned int j = 0; j< nodeVec[i]->adj.size(); j++){
+			cout << nodeVec[i]->adj[j]->getRoad().getID();
+		}
 	 }
 	return 0;
 }

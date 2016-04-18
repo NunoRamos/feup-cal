@@ -7,18 +7,19 @@
 
 #ifndef RESERVATION_H_
 #define RESERVATION_H_
-
+#include <string>
+#include "Graph.h"
 
 using namespace std;
 
 class Reservation{
 
-	Node destination;
+	Node *destination;
 	string arrivalTime;
 
 public:
-	Reservation(Node destination, string arrivalTime);
-	Node getDestination();
+	Reservation(Node *destination, string arrivalTime);
+	Node *getDestination();
 	string getArrivalTime();
 };
 
