@@ -219,7 +219,7 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 			nodeTo->addEdgeTo(nodeFrom, new Edge(currRoad));
 		}
 
-		cout<<"reading "<<l++<<endl;
+		//cout<<"reading "<<l++<<endl;
 
 	}
 
@@ -243,11 +243,12 @@ int main(void) {
 	readEdges(SUBRD_FILENAME, nodeVec, roadVec, roadIds);
 	cout << "exited..\n";
 
-	for(unsigned int i = 0; i< nodeVec.size(); i++){ //FIXME remove
+	/*for(unsigned int i = 0; i< nodeVec.size(); i++){ //FIXME remove
 		for(unsigned int j = 0; j< nodeVec[i]->adj.size(); j++){
 			cout << nodeVec[i]->adj[j]->getRoad().getID()<<" connects Node "<<nodeVec[i]->getId()<<" to node "<<nodeVec[i]->adj[j]->getDest().getId()<<endl;
 		}
-	}
+	}*/
+
 	return 0;
 }
 
