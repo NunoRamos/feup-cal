@@ -21,9 +21,12 @@ string Road::getName(){
 	return name;
 }
 
+long Road::getID(){
+	return id;
+}
+
 //******EDGE************
-Edge::Edge(Node *n, Road *road){
-	this->dest = n;
+Edge::Edge(Road *road){
 	this->road = road;
 }
 

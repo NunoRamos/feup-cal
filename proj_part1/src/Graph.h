@@ -23,7 +23,8 @@ class Road{
 	bool twoWay;
 
 public:
-	Road(long id,std::string name,bool twoWay);;
+	Road(long id,std::string name,bool twoWay);
+	long getID();
 	std::string getName();
 	friend class Edge;
 };
@@ -32,8 +33,9 @@ class Edge{
 	Node *dest;
 	Road *road;
 public:
-	Edge(Node *dest, Road *road = NULL);
+	Edge(Road *road);
 	friend class Node;
+	void setDest(Node *dest);
 };
 
 class Node{
