@@ -39,6 +39,7 @@ public:
 	Road getRoad() const;
 	friend class Node;
 	void setDest(Node *from,Node *to);
+	Node getDest() const;
 };
 
 class Node{

@@ -12,9 +12,12 @@
 #include <cstdlib>
 #include <string>
 #include <sstream>
-#include "BinarySearch.h"
 
 using namespace std;
+
+#define NODES_FILENAME "test_nodes.txt"
+#define ROADS_FILENAME "test_roads.txt"
+#define SUBRD_FILENAME "test_subroads.txt"
 
 /**
  * \brief function that reads the nodes from a file and stores them in a vector
@@ -174,13 +177,23 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 			}
 		}*/
 
-		int roadPos = BinarySearch(roadIds,edgeID);
-		if(roadPos == -1){
-			cout<<"Binary Search error\n";
-			return ;
+		bool foundMatch = false;
+
+		for(unsigned int i = 0; i<roads.size(); i++){
+			if (roads[i]->getID() == edgeID){
+				twoway = roads[i]->isTwoWay();
+				currRoad = roads[i];
+				foundMatch = true;
+			}
 		}
-		currRoad = roads[roadPos];
-		twoway = roads[roadPos]->isTwoWay();
+
+		if(!foundMatch){
+			cout<<"Search failure\n";
+			cin.get();
+			continue;
+		}
+
+
 
 		for(int i = 0; i<nodes.size(); i++){
 			if(nodes[i]->getId() == nodeFromID)
@@ -206,7 +219,7 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 			nodeTo->addEdgeTo(nodeFrom, new Edge(currRoad));
 		}
 
-	//	cout<<"reading "<<l++<<endl;
+		cout<<"reading "<<l++<<endl;
 
 	}
 
@@ -220,21 +233,21 @@ int main(void) {
 	vector<Road *> roadVec;
 	vector<long> roadIds;
 
-	nodeVec = readNodes("nodes.txt");
-	roadVec = readRoads("roads.txt", roadIds);
+	nodeVec = readNodes(NODES_FILENAME);
+	roadVec = readRoads(ROADS_FILENAME, roadIds);
 
 	for(unsigned int i = 0; i<roadIds.size(); i++)
 		cout<<roadIds[i]<<endl;
 
 	cout << "entering readedges \n";
-	readEdges("subroads.txt", nodeVec, roadVec, roadIds);
+	readEdges(SUBRD_FILENAME, nodeVec, roadVec, roadIds);
 	cout << "exited..\n";
 
 	for(unsigned int i = 0; i< nodeVec.size(); i++){ //FIXME remove
 		for(unsigned int j = 0; j< nodeVec[i]->adj.size(); j++){
-			cout << nodeVec[i]->adj[j]->getRoad().getID();
+			cout << nodeVec[i]->adj[j]->getRoad().getID()<<" connects Node "<<nodeVec[i]->getId()<<" to node "<<nodeVec[i]->adj[j]->getDest().getId()<<endl;
 		}
-	 }
+	}
 	return 0;
 }
 

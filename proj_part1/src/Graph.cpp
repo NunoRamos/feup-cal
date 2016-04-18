@@ -43,6 +43,10 @@ void Edge::setDest(Node *from, Node *to){
 	this->weight = getDistance(from->getCoordinates(), to->getCoordinates());
 }
 
+Node Edge::getDest() const{
+	return *dest;
+}
+
 
 //******NODE************
 
