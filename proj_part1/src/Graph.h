@@ -14,25 +14,26 @@
 
 class Node;
 class Edge;
-class Graph;
+class Road;
 
-struct NodePair{
-	Node *n1;
-	Node *n2;
-};
 
-class Edge{
+class Road{
 	long id;
-	std::vector<struct NodePair *> pairs;
 	std::string name;
 	bool twoWay;
 
 public:
-	Edge(long id,std::string name,bool twoWay);
-	void setDest(Node *dest);
+	Road(long id,std::string name,bool twoWay);;
 	std::string getName();
+	friend class Edge;
+};
+
+class Edge{
+	Node *dest;
+	Road *road;
+public:
+	Edge(Node *dest, Road *road = NULL);
 	friend class Node;
-	friend class Graph;
 };
 
 class Node{
@@ -48,7 +49,7 @@ public:
 	Coordinates getCoordinates();
 	Point getPoint();
 	bool wasVisited();
-	bool addEdge(Edge *e, Node *n);
+	bool addEdge(Node *n);
 	bool removeEdgeTo(Node *n);
 };
 

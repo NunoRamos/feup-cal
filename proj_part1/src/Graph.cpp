@@ -8,21 +8,25 @@
 #include "Graph.h"
 using namespace std;
 
-Edge::Edge(long id, string name,bool twoWay){
+
+//******ROAD************
+Road::Road(long id, string name, bool twoWay){
 	this->id = id;
 	this->name = name;
 	this->twoWay = twoWay;
-	this->dest = NULL;
 }
 
 
-string Edge::getName(){
+string Road::getName(){
 	return name;
 }
 
-void Edge::setDest(Node *dest){
-	this->dest = dest;
+//******EDGE************
+Edge::Edge(Node *n, Road *road){
+	this->dest = n;
+	this->road = road;
 }
+
 
 //******NODE************
 

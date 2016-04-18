@@ -14,6 +14,9 @@
 
 using namespace std;
 
+/**
+ * \brief function that reads the nodes from a file and stores them in a vector
+ */
 vector<Node *> readNodes(const char* filename){
 
 
@@ -57,9 +60,12 @@ vector<Node *> readNodes(const char* filename){
 	return vec;
 }
 
-vector<Edge *> readRoads(const char* filename){
+/**
+ * vector that reads the Roads from a file and stores them in a vector
+ */
+vector<Road *> readRoads(const char* filename){
 
-	vector<Edge *> vec;
+	vector<Road *> vec;
 	ifstream file;
 
 	file.open(filename);
@@ -84,26 +90,55 @@ vector<Edge *> readRoads(const char* filename){
 			twoWay = (buff == "False")? false : true;
 		}
 
-		Edge *newEdge = new Edge(id,name,twoWay);
-		vec.push_back(newEdge);
+		Road *newRoad = new Road(id,name,twoWay);
+		vec.push_back(newRoad);
 	}
 
+	file.close();
 
 	return vec;
 }
 
+
+/**
+ * \brief function that reads the edges from the subroads file and creates the aproppriate edges in the nodes
+ *
+ * the function creates an Edge, sets the Road it refers to and checks if it is two way and
+ * calls the addEdge function in the Node(s)
+ *
+ * TODO end
+ */
+void readEdges(const char *filename, vector<Node *> &nodes, vector<Road *> &roads){
+
+	ifstream file;
+	file.open(filename);
+
+	if(!file.is_open())
+		return;
+
+	while(!file.eof()){
+
+		string buff;
+
+		long edgeID, nodeFromID, nodeToID;
+	}
+
+}
+
 int main (void){
 
-	vector<Node *> NodeVec;
-	vector<Edge *> EdgeVec;
+	vector<Node *> nodeVec;
+	vector<Road *> roadVec;
 
-	NodeVec = readNodes ("nodes.txt");
-	EdgeVec = readRoads ("roads.txt");
+	nodeVec = readNodes ("nodes.txt");
+	roadVec = readRoads ("roads.txt");
 
-	for(unsigned int i = 0; i< EdgeVec.size(); i++){
+	readEdges("subroads.txt", nodeVec, roadVec);
+
+	/*for(unsigned int i = 0; i< EdgeVec.size(); i++){ FIXME remove
 		if(EdgeVec[i]->getName() != "")
 		cout<<EdgeVec[i]->getName()<<endl;
-	}
+	}*/
 	return 0;
 }
 
