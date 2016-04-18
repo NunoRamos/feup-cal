@@ -14,8 +14,15 @@ class Passenger{
 
 	string name;
 	unsigned int nif;
-	//vertex destino
+	Node destino;
 	Reservation reservation;
+
+public:
+	Passenger(string name, unsigned int nif, Node destino, Reservation reservation);
+	string getName();
+	unsigned int getNif();
+	Node getDestino();
+	Reservation getReservation();
 
 };
 

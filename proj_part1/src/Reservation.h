@@ -13,8 +13,13 @@ using namespace std;
 
 class Reservation{
 
-	//TODO vertex destination
+	Node destination;
 	string arrivalTime;
+
+public:
+	Reservation(Node destination, string arrivalTime);
+	Node getDestination();
+	string getArrivalTime();
 };
 
 
