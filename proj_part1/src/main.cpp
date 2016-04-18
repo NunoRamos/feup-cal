@@ -12,6 +12,7 @@
 #include <cstdlib>
 #include <string>
 #include <sstream>
+#include "BinarySearch.h"
 
 using namespace std;
 
@@ -78,7 +79,7 @@ vector<Node *> readNodes(const char* filename) {
 /**
  * vector that reads the Roads from a file and stores them in a vector
  */
-vector<Road *> readRoads(const char* filename) {
+vector<Road *> readRoads(const char* filename, vector<long> &ids) {
 
 	vector<Road *> vec;
 	ifstream file;
@@ -110,6 +111,7 @@ vector<Road *> readRoads(const char* filename) {
 		}
 
 		Road *newRoad = new Road(id, name, twoWay);
+		ids.push_back(id);
 		vec.push_back(newRoad);
 	}
 
@@ -127,10 +129,12 @@ vector<Road *> readRoads(const char* filename) {
  * TODO end
  */
 void readEdges(const char *filename, vector<Node *> &nodes,
-		vector<Road *> &roads) {
+		vector<Road *> &roads, vector<long> roadIds) {
 
 	ifstream file;
 	file.open(filename);
+
+	int l = 0;
 
 	if (!file.is_open())
 		return;
@@ -139,7 +143,7 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 
 		string buff;
 		stringstream ss;
-		Edge *newEdge = NULL;
+		Road *currRoad = NULL;
 
 		bool twoway;
 		long edgeID, nodeFromID, nodeToID;
@@ -163,12 +167,20 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 			ss.clear();
 		}
 
-		for(int i = 0; i<roads.size(); i++){
+		/*for(unsigned int i = 0; i<roads.size(); i++){
 			if (roads[i]->getID() == edgeID){
 				twoway = roads[i]->isTwoWay();
-				newEdge = new Edge(roads[i]);
+				currRoad = roads[i];
 			}
+		}*/
+
+		int roadPos = BinarySearch(roadIds,edgeID);
+		if(roadPos == -1){
+			cout<<"Binary Search error\n";
+			return ;
 		}
+		currRoad = roads[roadPos];
+		twoway = roads[roadPos]->isTwoWay();
 
 		for(int i = 0; i<nodes.size(); i++){
 			if(nodes[i]->getId() == nodeFromID)
@@ -188,14 +200,17 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 			continue;
 		}
 
-		nodeFrom->addEdgeTo(nodeTo, newEdge);
+		nodeFrom->addEdgeTo(nodeTo, new Edge(currRoad));
 
 		if(twoway){
-			nodeTo->addEdgeTo(nodeFrom, newEdge);
+			nodeTo->addEdgeTo(nodeFrom, new Edge(currRoad));
 		}
 
+	//	cout<<"reading "<<l++<<endl;
 
 	}
+
+	file.close();
 
 }
 
@@ -203,16 +218,21 @@ int main(void) {
 
 	vector<Node *> nodeVec;
 	vector<Road *> roadVec;
+	vector<long> roadIds;
 
 	nodeVec = readNodes("nodes.txt");
-	roadVec = readRoads("roads.txt");
+	roadVec = readRoads("roads.txt", roadIds);
 
-	readEdges("subroads.txt", nodeVec, roadVec);
+	for(unsigned int i = 0; i<roadIds.size(); i++)
+		cout<<roadIds[i]<<endl;
 
-	/*for(unsigned int i = 0; i< EdgeVec.size(); i++){ FIXME remove
-	 if(EdgeVec[i]->getName() != "")
-	 cout<<EdgeVec[i]->getName()<<endl;
-	 }*/
+	cout << "entering readedges \n";
+	readEdges("subroads.txt", nodeVec, roadVec, roadIds);
+	cout << "exited..\n";
+
+	for(unsigned int i = 0; i< nodeVec.size(); i++){ //FIXME remove
+		cout<<nodeVec[i]->adj.size()<<endl;
+	 }
 	return 0;
 }
 

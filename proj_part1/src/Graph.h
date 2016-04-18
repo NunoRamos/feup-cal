@@ -46,7 +46,7 @@ class Node{
 	Coordinates* coords;
 	Point* point;
 	bool visited;
-	std::vector<Edge> adj;
+	public :std::vector<Edge *> adj;
 
 public:
 	Node(long id, Coordinates *coords, Point *point);
