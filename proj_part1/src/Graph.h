@@ -180,6 +180,6 @@ public:
 	 * \brief removes an edge from a Graph, to be searched by its ID
 	 */
 	bool removeEdge(long id);
-}
+};
 
 #endif /* SRC_GRAPH_H_ */
