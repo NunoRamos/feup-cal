@@ -137,7 +137,49 @@ public:
  * \brief class that holds a set of Nodes connected by Edges
  */
 class Graph{
-	std::vector<Node> vertexSet;
-};
+	std::vector<Node *> vertexSet;
+public:
+
+	/**
+	 * \brief adds an already created Node to a graph
+	 *
+	 * \ret returns true if sucessful
+	 */
+	bool addNode(Node *n);
+
+	/**
+	 * \brief adds a new Node to a graph
+	 *
+	 * \ret returns true if sucessful
+	 */
+	bool addNode(long id,double lat,double lon,double x,double y);
+
+	/**
+	 * \brief removes a Node from a graph, to be searched by its latitude and longitude
+	 *
+	 * \ret true if sucessful
+	 */
+	bool removeNode(double lat, double lon);
+
+
+	/**
+	 * \brief adds an already created Edge to a Graph
+	 *
+	 * \ret true if sucessful
+	 */
+	bool addEdge(Edge *e);
+
+	/**
+	 * \brief adds a new Edge to a Graph
+	 *
+	 * \ret true if sucessful
+	 */
+	bool addEdge(Node *nodeFrom, Node *nodeTo, Road *info);
+
+	/**
+	 * \brief removes an edge from a Graph, to be searched by its ID
+	 */
+	bool removeEdge(long id);
+}
 
 #endif /* SRC_GRAPH_H_ */
