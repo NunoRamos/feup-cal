@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "Graph.h"
+#include "UserInterface.h"
 #include <fstream>
 #include <istream>
 #include <cstdlib>
@@ -16,6 +17,8 @@
 #define NODES_FILENAME "test_nodes.txt"
 #define ROADS_FILENAME "test_roads.txt"
 #define SUBRD_FILENAME "test_subroads.txt"
+
+#define MAX_PASSENGERS 10
 
 
 using namespace std;
@@ -236,18 +239,26 @@ int main(void) {
 	nodeVec = readNodes(NODES_FILENAME);
 	roadVec = readRoads(ROADS_FILENAME, roadIds);
 
-	for(unsigned int i = 0; i<roadIds.size(); i++)
-		cout<<roadIds[i]<<endl;
+	/*for(unsigned int i = 0; i<roadIds.size(); i++)
+		cout<<roadIds[i]<<endl;*/
 
-	cout << "entering readedges \n";
+	//cout << "entering readedges \n";
 	readEdges(SUBRD_FILENAME, nodeVec, roadVec, roadIds);
-	cout << "exited..\n";
+	//cout << "exited..\n";
 
 	/*for(unsigned int i = 0; i< nodeVec.size(); i++){ //FIXME remove
 		for(unsigned int j = 0; j< nodeVec[i]->adj.size(); j++){
 			cout << nodeVec[i]->adj[j]->getRoad().getID()<<" connects Node "<<nodeVec[i]->getId()<<" to node "<<nodeVec[i]->adj[j]->getDest().getId()<<endl;
 		}
 	}*/
+
+	Graph *graph = new Graph(nodeVec);
+	UserInterface *cli = new UserInterface(graph,MAX_PASSENGERS);
+
+
+	cli->mainMenu();
+
+
 
 	return 0;
 }

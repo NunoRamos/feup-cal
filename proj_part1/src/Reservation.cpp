@@ -12,3 +12,7 @@ Node *Reservation::getDestination(){
 string Reservation::getArrivalTime(){
 	return arrivalTime;
 }
+
+Passenger* Reservation::getClient(){
+	return client;
+}

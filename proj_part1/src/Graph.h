@@ -141,6 +141,11 @@ class Graph{
 public:
 
 	/**
+	 * \brief Basic class constructor
+	 */
+	Graph(std::vector<Node *> vertexSet);
+
+	/**
 	 * \brief adds an already created Node to a graph
 	 *
 	 * \ret returns true if sucessful

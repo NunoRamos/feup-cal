@@ -21,9 +21,9 @@ class UserInterface{
 
 
 public:
-	UserInterface(Graph g, int maxPassengers);
+	UserInterface(Graph *g, int maxPassengers);
 	bool addReservation (Reservation *r);
-	void mainMenu();
+	void mainMenu() const;
 	void transportPassengers();
 };
 

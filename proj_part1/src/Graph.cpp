@@ -80,3 +80,8 @@ bool Node::addEdgeTo(Node *n, Edge *e){
 	e->setDest(this,n);
 	this->adj.push_back(e);
 }
+
+//********GRAPH************
+Graph::Graph(vector<Node *> vertexSet){
+	this->vertexSet = vertexSet;
+}

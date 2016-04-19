@@ -10,6 +10,7 @@
 #include <string>
 #include "Graph.h"
 
+class Passenger;
 using namespace std;
 
 class Reservation{
