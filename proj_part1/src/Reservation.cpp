@@ -1,6 +1,6 @@
 #include "Reservation.h"
 
-Reservation::Reservation(Node *destination, string arrivalTime){
+Reservation::Reservation(Node *destination, string arrivalTime, Passenger *client){
 	this->destination = destination;
 	this->arrivalTime = arrivalTime;
 }
@@ -16,3 +16,4 @@ string Reservation::getArrivalTime(){
 Passenger* Reservation::getClient(){
 	return client;
 }
+

@@ -140,7 +140,7 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 	ifstream file;
 	file.open(filename);
 
-	int l = 0;
+	int l = 1;
 
 	if (!file.is_open())
 		return;
@@ -222,7 +222,14 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 			nodeTo->addEdgeTo(nodeFrom, new Edge(currRoad));
 		}
 
-		//cout<<"reading "<<l++<<endl;
+		for(int i=0;i<l;i++){
+			cout<<'.';
+		}
+		cout<<endl;
+
+		l++;
+		if(l>3)
+			l=1;
 
 	}
 

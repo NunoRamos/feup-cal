@@ -14,3 +14,7 @@ string Passenger::getName(){
 unsigned int Passenger::getNIF(){
 	return nif;
 }
+
+Reservation *Passenger::makeReservation(Node *destination, string arrivaltime){
+	return new Reservation(destination,arrivaltime,this);
+}
