@@ -16,11 +16,14 @@ class Reservation{
 
 	Node *destination;
 	string arrivalTime;
+	Passenger *client;
 
 public:
 	Reservation(Node *destination, string arrivalTime);
 	Node *getDestination();
 	string getArrivalTime();
+	Passenger *getClient();
+	void setClient();
 };
 
 

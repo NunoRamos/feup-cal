@@ -13,12 +13,12 @@
 #include <string>
 #include <sstream>
 
-using namespace std;
-
 #define NODES_FILENAME "test_nodes.txt"
 #define ROADS_FILENAME "test_roads.txt"
 #define SUBRD_FILENAME "test_subroads.txt"
 
+
+using namespace std;
 /**
  * \brief function that reads the nodes from a file and stores them in a vector
  */
