@@ -10,7 +10,7 @@
 #include "Passenger.h"
 
 UserInterface::UserInterface(Graph *g, int maxPassengers){
-	this->graph = graph;
+	this->graph = g;
 	this->maxPassengers = maxPassengers;
 }
 
@@ -40,6 +40,24 @@ bool UserInterface::addReservation(Reservation *r){
 void UserInterface::mainMenu() const{
 	cout<<"Welcome!\n";
 	cin.get();
+}
+
+void UserInterface::goTo(long id_dest){
+	cout<<"Entrei na funcao goTo\n";
+
+	long id_origin = 25503940;
+	vector<Node * > path;
+
+
+	graph->resetIndegrees();
+	cout<<"Sai da funcao indegree\n";
+	graph->bellmanFordShortestPath(id_dest);
+
+	path = graph->getPath(id_origin, id_dest);
+
+/*	for(unsigned int i=0; i<path.size(); i++){
+		cout<<"id "<<i<<" "<<path[i]->getId()<<endl;
+	}*/
 }
 
 

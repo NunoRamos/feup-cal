@@ -25,6 +25,7 @@ public:
 	bool addReservation (Reservation *r);
 	void mainMenu() const;
 	void transportPassengers();
+	void goTo(long id);
 };
 
 

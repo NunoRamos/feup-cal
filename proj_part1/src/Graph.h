@@ -11,6 +11,9 @@
 #include <iostream>
 #include <vector>
 #include "Coordinates.h"
+#include <climits>
+#include <queue>
+#include <list>
 
 class Node;
 class Edge;
@@ -79,6 +82,7 @@ public:
 	Node getDest() const;
 
 	friend class Node;
+	friend class Graph;
 };
 
 
@@ -91,8 +95,15 @@ class Node{
 	Point* point;	///< Coordinate position in radians
 	bool visited; ///< boolean that is set to true when a Node has been reached
 	public :std::vector<Edge *> adj; ///< Edges that go from this Node to another Node
+	int indegree; ///<Number of edges enter on the node
+	bool processing; ///<If the node is being processed
+	double dist; ///<Distance to the source node
+	Node* path; ///<Node closer to this node on is way to the source node
 
 public:
+
+	friend class Graph;
+
 	/**
 	 * \brief Basic class constructor
 	 */
@@ -131,15 +142,21 @@ public:
 	 * TODO
 	 */
 	bool removeEdgeTo(Node *n);
+
+	/**
+	 * \brief returns the indegree of the node
+	 */
+	int getIndegree();
+
 };
 
 /**
  * \brief class that holds a set of Nodes connected by Edges
  */
 class Graph{
-	std::vector<Node *> vertexSet;
-public:
 
+public:
+	std::vector<Node *> vertexSet;
 	/**
 	 * \brief Basic class constructor
 	 */
@@ -185,6 +202,26 @@ public:
 	 * \brief removes an edge from a Graph, to be searched by its ID
 	 */
 	bool removeEdge(long id);
+
+	/**
+	 * \brief Resets all the indegrees, and then recalculates their value
+	 */
+	void resetIndegrees();
+
+	/**
+	 * \brief Initializes the members dist and path to a node origin
+	 */
+	void bellmanFordShortestPath(long id_dest);
+
+	/**
+	 * \brief Get path from origin to dest
+	 */
+	std::vector<Node*> getPath(long origin, long dest);
+
+	/**
+	 * \brief Gets the node that has the id, id
+	 */
+	Node* getNode(long id);
 };
 
 #endif /* SRC_GRAPH_H_ */

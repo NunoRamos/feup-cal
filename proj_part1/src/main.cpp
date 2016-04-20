@@ -30,6 +30,11 @@ vector<Node *> readNodes(const char* filename) {
 	vector<Node *> vec;
 	ifstream file;
 	stringstream ss;
+	int i = 0;
+
+	Coordinates *newCoord;
+	Point *newPoint;
+	Node *newNode;
 
 	file.open(filename);
 	if (file.is_open()) {
@@ -37,43 +42,60 @@ vector<Node *> readNodes(const char* filename) {
 		long id;
 		double lat, lon, x, y;
 		string file_buf;
+		file_buf.clear();
 
 		while (!file.eof()) {
-			if (getline(file, file_buf, ';')){
+			if(getline(file, file_buf, ';')){
+				cout<<"\n\n";
+				cout<<file_buf<<endl;
+
 				ss<<file_buf;
+				//cout<<ss.str()<<endl;
 				ss >> id;
+				if(id==2147483647){
+					cout<<"Merdou " <<i<< "  "<<id<<endl;
+					exit(0);
+				}
+				i++;
+				cout<<id<<endl;
+				file_buf.clear();
 				ss.clear();
 			}
+
 
 			if (getline(file, file_buf, ';')){
 				ss<<file_buf;
 				ss >> lat;
+				file_buf.clear();
 				ss.clear();
 			}
 
 			if (getline(file, file_buf, ';')){
 				ss<<file_buf;
 				ss >> lon;
+				file_buf.clear();
 				ss.clear();
 			}
 
 			if (getline(file, file_buf, ';')){
 				ss<<file_buf;
 				ss >> x;
+				file_buf.clear();
 				ss.clear();
 			}
 
 			if (getline(file, file_buf)){
 				ss<<file_buf;
 				ss >> y;
+				file_buf.clear();
 				ss.clear();
 			}
 
-			Coordinates *newCoord = new Coordinates(lon, lat);
-			Point *newPoint = new Point(x, y);
-			Node *newNode = new Node(id, newCoord, newPoint);
-
+			newCoord = new Coordinates(lon, lat);
+			newPoint = new Point(x, y);
+			newNode = new Node(id, newCoord, newPoint);
 			vec.push_back(newNode);
+
 		}
 	}
 
@@ -98,6 +120,7 @@ vector<Road *> readRoads(const char* filename, vector<long> &ids) {
 	while (!file.eof()) {
 
 		string buff;
+		buff.clear();
 		stringstream ss;
 
 		long id;
@@ -140,14 +163,13 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 	ifstream file;
 	file.open(filename);
 
-	int l = 0;
-
 	if (!file.is_open())
 		return;
 
 	while (!file.eof()) {
 
 		string buff;
+		buff.clear();
 		stringstream ss;
 		Road *currRoad = NULL;
 
@@ -173,13 +195,6 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 			ss.clear();
 		}
 
-		/*for(unsigned int i = 0; i<roads.size(); i++){
-			if (roads[i]->getID() == edgeID){
-				twoway = roads[i]->isTwoWay();
-				currRoad = roads[i];
-			}
-		}*/
-
 		bool foundMatch = false;
 
 		for(unsigned int i = 0; i<roads.size(); i++){
@@ -198,7 +213,7 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 
 
 
-		for(int i = 0; i<nodes.size(); i++){
+		for(unsigned int i = 0; i<nodes.size(); i++){
 			if(nodes[i]->getId() == nodeFromID)
 				nodeFrom = nodes[i];
 
@@ -221,9 +236,6 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 		if(twoway){
 			nodeTo->addEdgeTo(nodeFrom, new Edge(currRoad));
 		}
-
-		//cout<<"reading "<<l++<<endl;
-
 	}
 
 	file.close();
@@ -237,25 +249,20 @@ int main(void) {
 	vector<long> roadIds;
 
 	nodeVec = readNodes(NODES_FILENAME);
-	roadVec = readRoads(ROADS_FILENAME, roadIds);
+	roadVec = readRoads(ROADS_FILENAME, roadIds);;
 
-	/*for(unsigned int i = 0; i<roadIds.size(); i++)
-		cout<<roadIds[i]<<endl;*/
-
-	//cout << "entering readedges \n";
 	readEdges(SUBRD_FILENAME, nodeVec, roadVec, roadIds);
-	//cout << "exited..\n";
-
-	/*for(unsigned int i = 0; i< nodeVec.size(); i++){ //FIXME remove
-		for(unsigned int j = 0; j< nodeVec[i]->adj.size(); j++){
-			cout << nodeVec[i]->adj[j]->getRoad().getID()<<" connects Node "<<nodeVec[i]->getId()<<" to node "<<nodeVec[i]->adj[j]->getDest().getId()<<endl;
-		}
-	}*/
 
 	Graph *graph = new Graph(nodeVec);
 	UserInterface *cli = new UserInterface(graph,MAX_PASSENGERS);
 
+	cout<<graph->vertexSet.size()<<endl;
+	/*for(int i=0; i<graph->vertexSet.size(); i++){
+		cout<<graph->vertexSet[i]->getId()<<endl;
+	}*/
 
+	//cout<<"Vou entrar!\n";
+	//cli->goTo(25503996);
 	cli->mainMenu();
 
 
