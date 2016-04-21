@@ -20,11 +20,10 @@ class Reservation{
 	Passenger *client;
 
 public:
-	Reservation(Node *destination, string arrivalTime);
+	Reservation(Node *destination, string arrivalTime, Passenger *client);
 	Node *getDestination();
 	string getArrivalTime();
 	Passenger *getClient();
-	void setClient();
 };
 
 

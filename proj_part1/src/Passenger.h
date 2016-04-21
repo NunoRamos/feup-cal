@@ -22,7 +22,7 @@ public:
 	Passenger(string name, unsigned int nif, Node *destino, Reservation *reservation);
 	string getName();
 	unsigned int getNIF();
-	void makeReservation(Node *destination, string arrivaltime);
+	Reservation* makeReservation(Node *destination, string arrivaltime);
 
 };
 

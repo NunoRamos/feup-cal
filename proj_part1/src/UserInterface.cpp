@@ -8,6 +8,7 @@
 #include "UserInterface.h"
 #include "Reservation.h"
 #include "Passenger.h"
+#include <cstdlib>
 
 UserInterface::UserInterface(Graph *g, int maxPassengers){
 	this->graph = g;
@@ -39,6 +40,28 @@ bool UserInterface::addReservation(Reservation *r){
 
 void UserInterface::mainMenu() const{
 	cout<<"Welcome!\n";
+	cout<<"Please choose an option: \n";
+	cout<<"1 - Client Interface\n";
+	cout<<"2 - Make transfer\n";
+	cout<<"3 - Exit\n";
+	cout<<"\nYour option: ";
+
+	int op;
+	cin>>op;
+
+	while(op<1 || op>3)
+		cout<<"Please choose a valid option: ";
+
+	switch(op){
+	case 1:
+		//TODO client screen - schedule transfers, add clients, etc...
+		break;
+	case 2:
+		//TODO plan the trip for the clients who arrive first
+		break;
+	case 3:
+		exit(0);
+	}
 	cin.get();
 }
 

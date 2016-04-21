@@ -163,6 +163,7 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 	ifstream file;
 	file.open(filename);
 
+
 	if (!file.is_open())
 		return;
 
