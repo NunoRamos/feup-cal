@@ -25,7 +25,7 @@ class Road;
  *	this info is not immediately useful for going through the graph
  */
 class Road{
-	long id;
+	unsigned long id;
 	std::string name;
 	bool twoWay;
 
@@ -34,12 +34,12 @@ public:
 	/**
 	 * \brief Basic Road class constructor
 	 */
-	Road(long id,std::string name,bool twoWay);
+	Road(unsigned long id,std::string name,bool twoWay);
 
 	/**
 	 * \brief returns the ID of the Road
 	 */
-	long getID() const;
+	unsigned long getID() const;
 
 	/**
 	 * \brief returns the name of a Road
@@ -90,7 +90,7 @@ public:
  * \brief class that refers to certain points on a map that are reachable through Edges
  */
 class Node{
-	long id; ///< Node ID
+	unsigned long id; ///< Node ID
 	Coordinates* coords; ///< Coordinate position of the Node
 	Point* point;	///< Coordinate position in radians
 	bool visited; ///< boolean that is set to true when a Node has been reached
@@ -108,12 +108,12 @@ public:
 	/**
 	 * \brief Basic class constructor
 	 */
-	Node(long id, Coordinates *coords, Point *point);
+	Node(unsigned long id, Coordinates *coords, Point *point);
 
 	/**
 	 * \brief returns the ID of the Node
 	 */
-	long getId();
+	unsigned long getId();
 
 	/**
 	 * \brief returns the Coordinates of the Node
@@ -175,7 +175,7 @@ public:
 	 *
 	 * \ret returns true if sucessful
 	 */
-	bool addNode(long id,double lat,double lon,double x,double y);
+	bool addNode(unsigned long id,double lat,double lon,double x,double y);
 
 	/**
 	 * \brief removes a Node from a graph, to be searched by its latitude and longitude
@@ -202,7 +202,7 @@ public:
 	/**
 	 * \brief removes an edge from a Graph, to be searched by its ID
 	 */
-	bool removeEdge(long id);
+	bool removeEdge(unsigned long id);
 
 	/**
 	 * \brief Resets all the indegrees, and then recalculates their value
@@ -212,22 +212,22 @@ public:
 	/**
 	 * \brief Uses  Bellman Ford's algorithm to determine the shortest path to any node from a source node
 	 */
-	void bellmanFordShortestPath(long source);
+	void bellmanFordShortestPath(unsigned long source);
 
 	/**
 	 * \brief Uses Dijkstra's algorithm to determine the shortest path to any node from a source node
 	 */
-	void dijkstraShortestPath(long source);
+	void dijkstraShortestPath(unsigned long source);
 
 	/**
 	 * \brief Get path from origin to dest
 	 */
-	std::vector<Node*> getPath(long origin, long dest);
+	std::vector<Node*> getPath(unsigned long origin, unsigned long dest);
 
 	/**
 	 * \brief Gets the node that has the id, id
 	 */
-	Node* getNode(long id);
+	Node* getNode(unsigned long id);
 };
 
 #endif /* SRC_GRAPH_H_ */

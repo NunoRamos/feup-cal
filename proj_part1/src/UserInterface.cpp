@@ -65,9 +65,9 @@ void UserInterface::mainMenu() const{
 	cin.get();
 }
 
-void UserInterface::goTo(long id_dest){
+void UserInterface::goTo(unsigned long id_dest){
 
-	long id_origin = 3713666414; //3713666414 -> 25532201
+	unsigned long id_origin = 3713666414; //3713666414 -> 25532201
 	vector<Node * > path;
 
 

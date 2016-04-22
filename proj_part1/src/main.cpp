@@ -31,7 +31,6 @@ vector<Node *> readNodes(const char* filename) {
 	vector<Node *> vec;
 	ifstream file;
 	stringstream ss;
-	int i = 0;
 
 	Coordinates *newCoord;
 	Point *newPoint;
@@ -40,7 +39,7 @@ vector<Node *> readNodes(const char* filename) {
 	file.open(filename);
 	if (file.is_open()) {
 
-		long id;
+		unsigned long id;
 		double lat, lon, x, y;
 		string file_buf;
 		file_buf.clear();
@@ -98,7 +97,7 @@ vector<Node *> readNodes(const char* filename) {
 /**
  * vector that reads the Roads from a file and stores them in a vector
  */
-vector<Road *> readRoads(const char* filename, vector<long> &ids) {
+vector<Road *> readRoads(const char* filename, vector<unsigned long> &ids) {
 
 	vector<Road *> vec;
 	ifstream file;
@@ -114,7 +113,7 @@ vector<Road *> readRoads(const char* filename, vector<long> &ids) {
 		buff.clear();
 		stringstream ss;
 
-		long id;
+		unsigned long id;
 		string name;
 		bool twoWay = false;
 
@@ -153,7 +152,7 @@ vector<Road *> readRoads(const char* filename, vector<long> &ids) {
  * TODO end
  */
 void readEdges(const char *filename, vector<Node *> &nodes,
-		vector<Road *> &roads, vector<long> roadIds) {
+		vector<Road *> &roads, vector<unsigned long> roadIds) {
 
 	ifstream file;
 	file.open(filename);
@@ -170,7 +169,7 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 		Road *currRoad = NULL;
 
 		bool twoway;
-		long edgeID, nodeFromID, nodeToID;
+		unsigned long edgeID, nodeFromID, nodeToID;
 		Node *nodeFrom, *nodeTo;
 
 		if (getline(file, buff, ';')){
@@ -242,7 +241,7 @@ int main(void) {
 
 	vector<Node *> nodeVec;
 	vector<Road *> roadVec;
-	vector<long> roadIds;
+	vector<unsigned long> roadIds;
 
 	nodeVec = readNodes(NODES_FILENAME);
 	roadVec = readRoads(ROADS_FILENAME, roadIds);

@@ -18,7 +18,7 @@ struct node_greater_than{
 
 
 //******ROAD************
-Road::Road(long id, string name, bool twoWay){
+Road::Road(unsigned long id, string name, bool twoWay){
 	this->id = id;
 	this->name = name;
 	this->twoWay = twoWay;
@@ -29,7 +29,7 @@ string Road::getName() const{
 	return name;
 }
 
-long Road::getID() const{
+unsigned long Road::getID() const{
 	return id;
 }
 
@@ -62,7 +62,7 @@ Node* Edge::getDest() const{
 /**
  *\brief Constructor for the Node class
  */
-Node::Node(long id, Coordinates *coords, Point *point) {
+Node::Node(unsigned long id, Coordinates *coords, Point *point) {
 	this->id = id;
 	this->coords = coords;
 	this->point = point;
@@ -73,7 +73,7 @@ Node::Node(long id, Coordinates *coords, Point *point) {
 	this->indegree = 0;
 }
 
-long Node::getId() {
+unsigned long Node::getId() {
 	return id;
 }
 
@@ -102,6 +102,10 @@ int Node::getIndegree(){
 //********GRAPH************
 Graph::Graph(vector<Node *> vertexSet){
 	this->vertexSet = vertexSet;
+
+	for(unsigned int i=0; i<this->vertexSet.size(); i++){
+		cout<<this->vertexSet[i]->id<<endl;
+	}
 }
 
 void Graph::resetIndegrees(){
@@ -118,7 +122,7 @@ void Graph::resetIndegrees(){
 
 }
 
-void Graph::bellmanFordShortestPath(long id_dest){
+void Graph::bellmanFordShortestPath(unsigned long id_dest){
 
 	for(unsigned int i = 0; i < vertexSet.size(); i++) {
 		vertexSet[i]->path = NULL;
@@ -143,7 +147,7 @@ void Graph::bellmanFordShortestPath(long id_dest){
 	}
 }
 
-void Graph::dijkstraShortestPath(long source){
+void Graph::dijkstraShortestPath(unsigned long source){
 	for(unsigned int i = 0; i < vertexSet.size(); i++) {
 		vertexSet[i]->path = NULL;
 		vertexSet[i]->dist = INT_INFINITY;
@@ -177,7 +181,7 @@ void Graph::dijkstraShortestPath(long source){
 	}
 }
 
-vector<Node*> Graph::getPath(long id_origin, long id_dest){
+vector<Node*> Graph::getPath(unsigned long id_origin, unsigned long id_dest){
 	list<Node *> buffer;
 	Node* v = getNode(id_dest);
 	buffer.push_front(v);
@@ -185,7 +189,7 @@ vector<Node*> Graph::getPath(long id_origin, long id_dest){
 	cout<<v->id;
 
 	if(v->path == NULL)
-		cout<<"\nFODEU\n";
+		cout<<"\nFALHOU\n";
 
 	while ( v->path != NULL &&  v->path->id != id_origin) {
 		v = v->path;
@@ -203,7 +207,7 @@ vector<Node*> Graph::getPath(long id_origin, long id_dest){
 	return res;
 }
 
-Node* Graph::getNode(long id){
+Node* Graph::getNode(unsigned long id){
 	for(unsigned int i=0; i<vertexSet.size(); i++){
 		if(vertexSet[i]->id == id)
 			return vertexSet[i];
