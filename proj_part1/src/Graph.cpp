@@ -102,10 +102,6 @@ int Node::getIndegree(){
 //********GRAPH************
 Graph::Graph(vector<Node *> vertexSet){
 	this->vertexSet = vertexSet;
-
-	for(unsigned int i=0; i<this->vertexSet.size(); i++){
-		cout<<this->vertexSet[i]->id<<endl;
-	}
 }
 
 void Graph::resetIndegrees(){
