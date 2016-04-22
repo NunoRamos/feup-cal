@@ -67,13 +67,15 @@ void UserInterface::mainMenu() const{
 
 void UserInterface::goTo(long id_dest){
 
-	long id_origin = 25503940;
+	long id_origin = 3713666414; //3713666414 -> 25532201
 	vector<Node * > path;
 
 
 	graph->resetIndegrees();
 	//graph->bellmanFordShortestPath(id_dest);
-	graph->dijkstraShortestPath(id_dest);
+	cout<<"Dijkstra\n"; cin.get();//TODO remove
+	graph->dijkstraShortestPath(id_origin);
+	cout<<"Dijkstra over\n";cin.get();
 
 	path = graph->getPath(id_origin, id_dest);
 

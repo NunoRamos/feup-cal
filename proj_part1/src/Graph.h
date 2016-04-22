@@ -103,6 +103,7 @@ class Node{
 public:
 
 	friend class Graph;
+	friend class Edge;
 
 	/**
 	 * \brief Basic class constructor

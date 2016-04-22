@@ -252,9 +252,7 @@ int main(void) {
 	Graph *graph = new Graph(nodeVec);
 	UserInterface *cli = new UserInterface(graph,MAX_PASSENGERS);
 
-	cout<<graph->vertexSet.size()<<endl;
-
-	cli->goTo(25503996);
+	cli->goTo(26015889);
 	cli->mainMenu();
 
 

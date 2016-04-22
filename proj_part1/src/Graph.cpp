@@ -40,6 +40,7 @@ bool Road::isTwoWay() const{
 //******EDGE************
 Edge::Edge(Road *road){
 	this->road = road;
+	this->dest = NULL;
 }
 
 Road Edge::getRoad() const{
@@ -66,6 +67,10 @@ Node::Node(long id, Coordinates *coords, Point *point) {
 	this->coords = coords;
 	this->point = point;
 	this->visited = false;
+	this->dist = INT_INFINITY;
+	this->path = NULL;
+	this->processing = false;
+	this->indegree = 0;
 }
 
 long Node::getId() {
@@ -150,10 +155,9 @@ void Graph::dijkstraShortestPath(long source){
 	Node *v = getNode(source);
 	q.push_back(v);
 	v->dist = 0;
-
+	cout<<"Im In\n";cin.get();
 	while(!q.empty()){
 		v=q.front(); q.erase(q.begin());
-
 		for(unsigned int i = 0; i < v->adj.size() ;i++){
 			Node *w = v->adj[i]->getDest();
 
@@ -177,9 +181,14 @@ vector<Node*> Graph::getPath(long id_origin, long id_dest){
 	list<Node *> buffer;
 	Node* v = getNode(id_dest);
 	buffer.push_front(v);
+
+	cout<<v->id;
+
+	if(v->path == NULL)
+		cout<<"\nFODEU\n";
+
 	while ( v->path != NULL &&  v->path->id != id_origin) {
 		v = v->path;
-		cout<<v->path->getId();
 		buffer.push_front(v);
 	}
 	if( v->path != NULL )
