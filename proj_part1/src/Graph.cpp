@@ -10,6 +10,13 @@ using namespace std;
 
 const int INT_INFINITY = INT_MAX;
 
+struct node_greater_than{
+	bool operator()(const Node *n1, const Node *n2){
+		return n1->dist > n2->dist;
+	}
+};
+
+
 //******ROAD************
 Road::Road(long id, string name, bool twoWay){
 	this->id = id;
@@ -44,8 +51,8 @@ void Edge::setDest(Node *from, Node *to){
 	this->weight = getDistance(from->getCoordinates(), to->getCoordinates());
 }
 
-Node Edge::getDest() const{
-	return *dest;
+Node* Edge::getDest() const{
+	return dest;
 }
 
 
@@ -93,7 +100,6 @@ Graph::Graph(vector<Node *> vertexSet){
 }
 
 void Graph::resetIndegrees(){
-	cout<<"Entrei\n"<<vertexSet.size()<<endl;
 
 	for(unsigned int i=0; i<vertexSet.size(); i++){
 		vertexSet[i]->indegree=0;
@@ -105,7 +111,6 @@ void Graph::resetIndegrees(){
 		}
 	}
 
-	cout<<"Estou a sair da funcao indegree\n";
 }
 
 void Graph::bellmanFordShortestPath(long id_dest){
@@ -131,21 +136,50 @@ void Graph::bellmanFordShortestPath(long id_dest){
 			}
 		}
 	}
+}
 
-/*	for(int i=0; i<2000; i++){
-		cout << vertexSet[i]->getId()<<"   ";
-		cout<< vertexSet[i]->dist<<endl;
-	}*/
+void Graph::dijkstraShortestPath(long source){
+	for(unsigned int i = 0; i < vertexSet.size(); i++) {
+		vertexSet[i]->path = NULL;
+		vertexSet[i]->dist = INT_INFINITY;
+		vertexSet[i]->processing = false;
+	}
 
+	vector<Node *> q;
+
+	Node *v = getNode(source);
+	q.push_back(v);
+	v->dist = 0;
+
+	while(!q.empty()){
+		v=q.front(); q.erase(q.begin());
+
+		for(unsigned int i = 0; i < v->adj.size() ;i++){
+			Node *w = v->adj[i]->getDest();
+
+
+			if(v->dist + v->adj[i]->weight < w->dist){
+				w->dist = v->dist + v->adj[i]->weight;
+				w->path = v;
+
+				if(!w->processing){
+					q.push_back(w);
+					w->processing = true;
+				}
+
+				make_heap(q.begin(),q.end(),node_greater_than());
+			}
+		}
+	}
 }
 
 vector<Node*> Graph::getPath(long id_origin, long id_dest){
 	list<Node *> buffer;
 	Node* v = getNode(id_dest);
-
 	buffer.push_front(v);
 	while ( v->path != NULL &&  v->path->id != id_origin) {
 		v = v->path;
+		cout<<v->path->getId();
 		buffer.push_front(v);
 	}
 	if( v->path != NULL )
@@ -168,3 +202,5 @@ Node* Graph::getNode(long id){
 
 	return NULL;
 }
+
+

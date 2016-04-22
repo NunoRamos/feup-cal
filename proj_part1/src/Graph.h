@@ -79,7 +79,7 @@ public:
 	/**
 	 * \brief Returns the destination Node
 	 */
-	Node getDest() const;
+	Node* getDest() const;
 
 	friend class Node;
 	friend class Graph;
@@ -209,9 +209,14 @@ public:
 	void resetIndegrees();
 
 	/**
-	 * \brief Initializes the members dist and path to a node origin
+	 * \brief Uses  Bellman Ford's algorithm to determine the shortest path to any node from a source node
 	 */
-	void bellmanFordShortestPath(long id_dest);
+	void bellmanFordShortestPath(long source);
+
+	/**
+	 * \brief Uses Dijkstra's algorithm to determine the shortest path to any node from a source node
+	 */
+	void dijkstraShortestPath(long source);
 
 	/**
 	 * \brief Get path from origin to dest

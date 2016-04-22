@@ -66,21 +66,20 @@ void UserInterface::mainMenu() const{
 }
 
 void UserInterface::goTo(long id_dest){
-	cout<<"Entrei na funcao goTo\n";
 
 	long id_origin = 25503940;
 	vector<Node * > path;
 
 
 	graph->resetIndegrees();
-	cout<<"Sai da funcao indegree\n";
-	graph->bellmanFordShortestPath(id_dest);
+	//graph->bellmanFordShortestPath(id_dest);
+	graph->dijkstraShortestPath(id_dest);
 
 	path = graph->getPath(id_origin, id_dest);
 
-/*	for(unsigned int i=0; i<path.size(); i++){
+	for(unsigned int i=0; i<path.size(); i++){
 		cout<<"id "<<i<<" "<<path[i]->getId()<<endl;
-	}*/
+	}
 }
 
 

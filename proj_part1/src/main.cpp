@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <string>
 #include <sstream>
+#include <cstring>
 
 #define NODES_FILENAME "test_nodes.txt"
 #define ROADS_FILENAME "test_roads.txt"
@@ -46,18 +47,8 @@ vector<Node *> readNodes(const char* filename) {
 
 		while (!file.eof()) {
 			if(getline(file, file_buf, ';')){
-				cout<<"\n\n";
-				cout<<file_buf<<endl;
-
 				ss<<file_buf;
-				//cout<<ss.str()<<endl;
 				ss >> id;
-				if(id==2147483647){
-					cout<<"Merdou " <<i<< "  "<<id<<endl;
-					exit(0);
-				}
-				i++;
-				cout<<id<<endl;
 				file_buf.clear();
 				ss.clear();
 			}
@@ -125,7 +116,7 @@ vector<Road *> readRoads(const char* filename, vector<long> &ids) {
 
 		long id;
 		string name;
-		bool twoWay;
+		bool twoWay = false;
 
 		if (getline(file, buff, ';')){
 			ss << buff;
@@ -136,7 +127,11 @@ vector<Road *> readRoads(const char* filename, vector<long> &ids) {
 		getline(file, name, ';');
 
 		if (getline(file, buff)) {
-			twoWay = (buff == "False") ? false : true;
+
+			if(buff.c_str()[0] == 'F')
+				twoWay = false;
+
+			else twoWay = true;
 		}
 
 		Road *newRoad = new Road(id, name, twoWay);
@@ -250,7 +245,7 @@ int main(void) {
 	vector<long> roadIds;
 
 	nodeVec = readNodes(NODES_FILENAME);
-	roadVec = readRoads(ROADS_FILENAME, roadIds);;
+	roadVec = readRoads(ROADS_FILENAME, roadIds);
 
 	readEdges(SUBRD_FILENAME, nodeVec, roadVec, roadIds);
 
@@ -258,12 +253,8 @@ int main(void) {
 	UserInterface *cli = new UserInterface(graph,MAX_PASSENGERS);
 
 	cout<<graph->vertexSet.size()<<endl;
-	/*for(int i=0; i<graph->vertexSet.size(); i++){
-		cout<<graph->vertexSet[i]->getId()<<endl;
-	}*/
 
-	//cout<<"Vou entrar!\n";
-	//cli->goTo(25503996);
+	cli->goTo(25503996);
 	cli->mainMenu();
 
 
