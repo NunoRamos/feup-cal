@@ -1,3 +1,4 @@
+#include <iostream>
 #include <cmath>
 
 /**
@@ -51,4 +52,4 @@ public:
  * \brief function used to get the distance between two geographical locations
  *
  */
-double getDistance(const Coordinates c1,const Coordinates c2);
+double getDistance(const Point c1,const Point c2);

@@ -35,8 +35,12 @@ double Point::getY() const{
 	return y;
 }
 
-double getDistance(const Coordinates c1,const Coordinates c2){
+double getDistance(const Point c1,const Point c2){
 
-	return sqrt((c1.getLatitude() - c2.getLatitude())*(c1.getLatitude() - c2.getLatitude()) *
-			(c1.getLongitude() -c1.getLongitude()) * (c1.getLongitude() - c1.getLongitude()));
+	double dist = sqrt((c1.getX() - c2.getX())*(c1.getX() - c2.getX()) +
+			(c1.getY() - c1.getY()) * (c1.getY() - c1.getY()));
+
+
+	std::cout<<"dist = "<<dist<<std::endl;
+	return dist;
 }
