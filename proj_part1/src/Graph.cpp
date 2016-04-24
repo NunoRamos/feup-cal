@@ -43,8 +43,8 @@ Edge::Edge(Road *road){
 	this->dest = NULL;
 }
 
-Road Edge::getRoad() const{
-	return *road;
+Road* Edge::getRoad() const{
+	return road;
 }
 
 void Edge::setDest(Node *from, Node *to){
@@ -155,7 +155,7 @@ void Graph::dijkstraShortestPath(unsigned long source){
 	Node *v = getNode(source);
 	q.push_back(v);
 	v->dist = 0;
-	cout<<"Im In\n";cin.get();
+	//cout<<"Im In\n";cin.get();
 	while(!q.empty()){
 		v=q.front(); q.erase(q.begin());
 		for(unsigned int i = 0; i < v->adj.size() ;i++){

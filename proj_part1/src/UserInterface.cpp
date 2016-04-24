@@ -67,21 +67,41 @@ void UserInterface::mainMenu() const{
 
 void UserInterface::goTo(unsigned long id_dest){
 
-	unsigned long id_origin = 3713666414; //3713666414 -> 25532201
-	vector<Node * > path;
+	//unsigned long id_origin = 3713666414; //3713666414 -> 25532201
+	unsigned long id_origin = 112617168; //112617168 -> 126604785
+	vector<Node *> path;
 
 
 	graph->resetIndegrees();
 	//graph->bellmanFordShortestPath(id_dest);
-	cout<<"Dijkstra\n"; cin.get();//TODO remove
+	//cout<<"Dijkstra\n"; cin.get();//TODO remove
 	graph->dijkstraShortestPath(id_origin);
-	cout<<"Dijkstra over\n";cin.get();
+	//cout<<"Dijkstra over\n";cin.get();
 
 	path = graph->getPath(id_origin, id_dest);
 
-	for(unsigned int i=0; i<path.size(); i++){
-		cout<<"id "<<i<<" "<<path[i]->getId()<<endl;
+	string oldRoadName = "1";
+
+	for(unsigned int i=0; i<path.size()-1; i++){
+		for(unsigned int j=0; j < path[i]->adj.size(); j++){
+			if(path[i]->adj[j]->getDest()->getId() == path[i+1]->getId()){
+
+				if(oldRoadName != path[i]->adj[j]->getRoad()->getName()){
+					oldRoadName = path[i]->adj[j]->getRoad()->getName();
+					cout<<"Turn to road ";
+					if(oldRoadName.size() == 0)
+						cout<<"Unknown Name"<<endl;
+					else
+						cout<<oldRoadName<<endl;
+
+				}
+			}
+		}
+		cout<<" Passing Node "<<path[i]->getId()<<endl;
 	}
+
+	cout<<"You are on destiny!"<<endl;
+	cout<<"Total Distance : "<<path[path.size()-1]->dist<<endl;
 }
 
 

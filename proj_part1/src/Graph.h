@@ -69,7 +69,7 @@ public:
 	/**
 	 * \brief returns the Road that stores the information relative to this Edge
 	 */
-	Road getRoad() const;
+	Road *getRoad() const;
 
 	/**
 	 * \brief sets the destination Node, calls the getDistance function of Coordinates.h to set the weight of the Edge
@@ -149,6 +149,10 @@ public:
 	 */
 	int getIndegree();
 
+	/**
+	 * \brief Getting the road that go from this node to node with id id_dest
+	 */
+	Road* getRoadTo(unsigned long id_dest);
 };
 
 /**
@@ -222,7 +226,7 @@ public:
 	/**
 	 * \brief Get path from origin to dest
 	 */
-	std::vector<Node*> getPath(unsigned long origin, unsigned long dest);
+	std::vector<Node *> getPath(unsigned long origin, unsigned long dest);
 
 	/**
 	 * \brief Gets the node that has the id, id

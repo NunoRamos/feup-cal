@@ -40,7 +40,5 @@ double getDistance(const Point c1,const Point c2){
 	double dist = sqrt((c1.getX() - c2.getX())*(c1.getX() - c2.getX()) +
 			(c1.getY() - c1.getY()) * (c1.getY() - c1.getY()));
 
-
-	std::cout<<"dist = "<<dist<<std::endl;
 	return dist;
 }

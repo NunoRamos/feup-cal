@@ -82,6 +82,8 @@ vector<Node *> readNodes(const char* filename) {
 			}
 
 			newCoord = new Coordinates(lon, lat);
+		//	cout<<"x : "<<x;
+			//cout<<"y : "<<y<<endl;
 			newPoint = new Point(x, y);
 			newNode = new Node(id, newCoord, newPoint);
 			vec.push_back(newNode);
@@ -251,7 +253,8 @@ int main(void) {
 	Graph *graph = new Graph(nodeVec);
 	UserInterface *cli = new UserInterface(graph,MAX_PASSENGERS);
 
-	cli->goTo(26015889);
+	//cli->goTo(26015889);
+	cli->goTo(474698115);
 	cli->mainMenu();
 
 
