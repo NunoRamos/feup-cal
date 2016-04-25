@@ -123,7 +123,7 @@ public:
 	/**
 	 * \brief returns the Coordinates of the Node as a Point (x and y are the coordinates in radians)
 	 */
-	Point getPoint();
+	Point getPoint() const;
 
 	/**
 	 * \brief checks the visited attribute to determine if a Node has already been travelled through
@@ -153,6 +153,11 @@ public:
 	 * \brief Getting the road that go from this node to node with id id_dest
 	 */
 	Road* getRoadTo(unsigned long id_dest);
+
+	/**
+	 * \brief gets the closest Node from a vector
+	 */
+	Node *getClosestNode(const std::vector<Node *> vec) const;
 };
 
 /**
