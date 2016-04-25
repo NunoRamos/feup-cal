@@ -182,7 +182,7 @@ vector<Node*> Graph::getPath(unsigned long id_origin, unsigned long id_dest){
 	Node* v = getNode(id_dest);
 	buffer.push_front(v);
 
-	cout<<v->id;
+	cout<<v->id<<"\n";
 
 	if(v->path == NULL)
 		cout<<"\nFALHOU\n";

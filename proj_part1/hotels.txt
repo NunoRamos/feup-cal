@@ -1,0 +1,4 @@
+25504011;Hotel Beta;
+454550114;Hotel Star Inn;
+1561603502;Hotel Ipanema;
+2181390930;Hotel Porto Palacio;
