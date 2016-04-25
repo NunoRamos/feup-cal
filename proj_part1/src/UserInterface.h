@@ -16,9 +16,9 @@
 class Hotel
 {
 	string name;
-	unsigned long idNode;
+	Node *node;
 public:
-	Hotel(string name, int idNode);
+	Hotel(string name, Node *n);
 	friend class UserInterface;
 };
 

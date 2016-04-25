@@ -23,10 +23,10 @@ UserInterface::UserInterface(Graph *g, int maxPassengers){
 	this->maxPassengers = maxPassengers;
 }
 
-Hotel::Hotel(string name, int idNode)
+Hotel::Hotel(string name, Node *n)
 {
 	this->name = name;
-	this->idNode = idNode;
+	this->node = n;
 }
 
 void UserInterface::readHotels()
@@ -59,7 +59,14 @@ void UserInterface::readHotels()
 			break;
 		}
 
-		Hotel* h = new Hotel(name, idNode);
+		Node *n = graph->getNode(idNode);
+
+		if(n == NULL){
+			cout << "Node not found: " << idNode << endl;
+			continue;
+		}
+
+		Hotel* h = new Hotel(name, n);
 		hotels.push_back(h);
 
 	}
@@ -118,7 +125,7 @@ void UserInterface::readReservations()
 		cout<<name<<" "<<nif<<" "<<hotel<<" "<<arrival_time<<endl;
 		Passenger* p = new Passenger(name, nif);
 
-		Reservation* res = new Reservation(graph->getNode(hotels[hotel-1]->idNode), arrival_time, p);
+		Reservation* res = new Reservation(hotels[hotel-1]->node, arrival_time, p);
 
 		addReservation(res);
 
@@ -205,7 +212,7 @@ void UserInterface::reservationMenu() {
 
 	Passenger* p = new Passenger(name, nif);
 
-	Reservation* res = new Reservation(graph->getNode(hotels[hotel-1]->idNode), arrival_time, p);
+	Reservation* res = new Reservation(hotels[hotel-1]->node, arrival_time, p);
 
 	addReservation(res);
 }
