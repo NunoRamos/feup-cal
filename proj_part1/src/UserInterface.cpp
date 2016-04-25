@@ -331,7 +331,7 @@ void UserInterface::transferTo(unsigned long id_from, unsigned long id_dest){
 					oldRoadName = path[i]->adj[j]->getRoad()->getName();
 					cout<<"Turn to road ";
 					if(oldRoadName.size() == 0)
-						cout<<"Unknown Name"<<endl;
+						cout<<"Unnamed road"<<endl;
 					else
 						cout<<oldRoadName<<endl;
 
