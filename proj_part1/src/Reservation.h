@@ -9,6 +9,7 @@
 #define RESERVATION_H_
 #include <string>
 #include "Graph.h"
+#include <sstream>
 
 class Passenger;
 using namespace std;
@@ -21,11 +22,12 @@ class Reservation{
 
 public:
 	Reservation(Node *destination, string arrivalTime, Passenger *client);
-	Node *getDestination();
-	string getArrivalTime();
-	Passenger *getClient();
+	Node *getDestination() const;
+	string getArrivalTime() const;
+	Passenger *getClient() const;
+
+	bool operator <(const Reservation &res) const;
+
 };
-
-
 
 #endif /* RESERVATION_H_ */

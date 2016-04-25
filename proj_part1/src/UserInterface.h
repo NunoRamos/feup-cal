@@ -24,7 +24,7 @@ public:
 
 class UserInterface{
 	Graph *graph;
-	priority_queue<Reservation *> reservations;
+	priority_queue<Reservation> reservations;
 	vector<Node> destinations;
 	int maxPassengers;
 	vector<Hotel*> hotels;
@@ -32,7 +32,7 @@ class UserInterface{
 
 public:
 	UserInterface(Graph *g, int maxPassengers);
-	bool addReservation (Reservation *r);
+	bool addReservation (Reservation r);
 	void mainMenu();
 	void transportPassengers();
 	void goTo(unsigned long id);
@@ -42,6 +42,8 @@ public:
 	void printHotels();
 	void printReservations();
 	void readReservations();
+
+	void aux();
 };
 
 

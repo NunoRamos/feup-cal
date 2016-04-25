@@ -118,7 +118,7 @@ void UserInterface::readReservations()
 		cout<<name<<" "<<nif<<" "<<hotel<<" "<<arrival_time<<endl;
 		Passenger* p = new Passenger(name, nif);
 
-		Reservation* res = new Reservation(graph->getNode(hotels[hotel-1]->idNode), arrival_time, p);
+		Reservation res(graph->getNode(hotels[hotel-1]->idNode), arrival_time, p);
 
 		addReservation(res);
 
@@ -127,16 +127,16 @@ void UserInterface::readReservations()
 
 void UserInterface::printReservations()
 {
-	priority_queue<Reservation * > temp;
+	priority_queue<Reservation> temp;
 
 	cout<<"Reservations: "<<endl<<endl;
 	while(!reservations.empty()){
 		cout<<"Name: ";
-		cout<<reservations.top()->getClient()->getName()<<endl;
+		cout<<reservations.top().getClient()->getName()<<endl;
 		cout<<"Destination: ";
-		cout<<reservations.top()->getDestination()->getId()<<endl;
+		cout<<reservations.top().getDestination()->getId()<<endl;
 		cout<<"Arrival Time: ";
-		cout<<reservations.top()->getArrivalTime()<<endl<<endl;
+		cout<<reservations.top().getArrivalTime()<<endl<<endl;
 
 		temp.push(reservations.top());
 		reservations.pop();
@@ -151,12 +151,12 @@ void UserInterface::printReservations()
 	cin.get();
 
 }
-bool UserInterface::addReservation(Reservation *r){
-	priority_queue<Reservation * > temp;
+bool UserInterface::addReservation(Reservation r){
+	priority_queue<Reservation> temp;
 
-	string name = r->getClient()->getName();
+	string name = r.getClient()->getName();
 	while(!reservations.empty()){
-		string topName = reservations.top()->getClient()->getName();
+		string topName = reservations.top().getClient()->getName();
 		if(topName == name){
 			return false;
 		}
@@ -205,11 +205,22 @@ void UserInterface::reservationMenu() {
 
 	Passenger* p = new Passenger(name, nif);
 
-	Reservation* res = new Reservation(graph->getNode(hotels[hotel-1]->idNode), arrival_time, p);
+	Reservation res(graph->getNode(hotels[hotel-1]->idNode), arrival_time, p);
 
 	addReservation(res);
 }
 
+void UserInterface::aux()
+{
+	Passenger* p = new Passenger("daniel", 123);
+	Reservation* r1 = new Reservation(graph->getNode(hotels[0]->idNode), "1212",p);
+	Reservation* r2 = new Reservation(graph->getNode(hotels[0]->idNode), "1535",p);
+
+	if(r1 < r2)
+		cout<<"menor";
+	else
+		cout<<"maior";
+}
 void UserInterface::mainMenu() {
 	cout<<"Welcome!\n";
 	cout<<"Please choose an option: \n";
@@ -240,7 +251,7 @@ void UserInterface::mainMenu() {
 		mainMenu();
 		break;
 	case 3:
-		//TODO plan the trip for the clients who arrive first
+		aux();
 		break;
 	case 4:
 		cout<<"\nGoodBye!\n";
