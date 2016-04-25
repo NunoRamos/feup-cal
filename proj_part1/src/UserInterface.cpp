@@ -256,7 +256,7 @@ void UserInterface::mainMenu() {
 	cin.get();
 }
 
-void UserInterface::goTo(unsigned long id_dest){
+void UserInterface::transferTo(unsigned long id_dest){
 
 	//unsigned long id_origin = 3713666414; //3713666414 -> 25532201
 	unsigned long id_origin = 112617168; //112617168 -> 126604785

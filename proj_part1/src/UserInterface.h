@@ -18,6 +18,12 @@ class Hotel
 	string name;
 	Node *node;
 public:
+	/**
+	 * \brief class constructor
+	 *
+	 * \arg name Name of the Hotel
+	 * \arg n Node that refers to the position of the Hotel
+	 */
 	Hotel(string name, Node *n);
 	friend class UserInterface;
 };
@@ -28,19 +34,61 @@ class UserInterface{
 	vector<Node> destinations;
 	int maxPassengers;
 	vector<Hotel*> hotels;
-
+	Node *source;
 
 public:
-	UserInterface(Graph *g, int maxPassengers);
-	bool addReservation (Reservation *r);
-	void mainMenu();
-	void transportPassengers();
-	void goTo(unsigned long id);
+	/**
+	 * \brief class constructor
+	 *
+	 * \arg g Graph that will be used by the program
+	 * \arg maxPassengers maximum number of passengers in one trip
+	 * \arg source Node from which the trips are planned, in this case it represents the airport
+	 */
+	UserInterface(Graph *g, int maxPassengers, Node *source);
 
+	/**
+	 * \brief Adds a Reservation to the priority queue
+	 */
+	bool addReservation (Reservation *r);
+
+	/**
+	 * \brief Displays the main menu of the program
+	 */
+	void mainMenu();
+
+	/**
+	 * \brief Plans the transfer
+	 */
+	void transportPassengers();
+
+	/**
+	 * \brief gets the path to the node with the ID id
+	 */
+	void transferTo(unsigned long id);
+
+	/**
+	 * \brief displays the menu of the reservations
+	 */
 	void reservationMenu();
+
+	/**
+	 * \brief reads the Hotels from a file and puts them in the hotels vector
+	 */
 	void readHotels();
+
+	/**
+	 * \brief displays all the hotels
+	 */
 	void printHotels();
+
+	/**
+	 * \brief displays all the reservations
+	 */
 	void printReservations();
+
+	/**
+	 * \brief reads all the reservations from a file and puts them in a priority queue which has the next reservation in the top
+	 */
 	void readReservations();
 };
 

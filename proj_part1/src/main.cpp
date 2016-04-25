@@ -19,6 +19,9 @@
 #define ROADS_FILENAME "test_roads.txt"
 #define SUBRD_FILENAME "test_subroads.txt"
 
+//airport node
+#define SOURCE_NODE_ID 4029232089
+
 #define MAX_PASSENGERS 10
 
 
@@ -251,7 +254,13 @@ int main(void) {
 	readEdges(SUBRD_FILENAME, nodeVec, roadVec, roadIds);
 
 	Graph *graph = new Graph(nodeVec);
-	UserInterface *cli = new UserInterface(graph,MAX_PASSENGERS);
+	Node *source = graph->getNode(SOURCE_NODE_ID);
+
+	if(source == NULL){
+		cout << "Source node not found!\n";
+		exit(30);
+	}
+	UserInterface *cli = new UserInterface(graph,MAX_PASSENGERS,source);
 
 
 	cli->readHotels();
