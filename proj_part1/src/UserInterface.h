@@ -13,13 +13,24 @@
 #include "Reservation.h"
 #include <queue>
 
-class Hotel
-{
+class Hotel{
 	string name;
 	unsigned long idNode;
+	bool assigned;
 public:
 	Hotel(string name, int idNode);
+	bool getAssigned();
+	void setAssigned(bool flag);
+	unsigned long getIdNode();
 	friend class UserInterface;
+};
+
+class Van{
+
+
+public:
+	vector<Hotel*> hotelZone;
+	Van(vector<Hotel*> hz);
 };
 
 class UserInterface{
@@ -28,6 +39,7 @@ class UserInterface{
 	vector<Node> destinations;
 	int maxPassengers;
 	vector<Hotel*> hotels;
+	vector<Van*> vans;
 
 
 public:
@@ -42,6 +54,7 @@ public:
 	void printHotels();
 	void printReservations();
 	void readReservations();
+	void gettingHotelsCloser();
 };
 
 

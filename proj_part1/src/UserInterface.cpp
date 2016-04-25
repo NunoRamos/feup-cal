@@ -17,6 +17,7 @@
 
 #define HOTELS_FILENAME "hotels.txt"
 #define RESERVATIONS_FILENAME "reservations.txt"
+#define NUMBER_VANS 2
 
 UserInterface::UserInterface(Graph *g, int maxPassengers){
 	this->graph = g;
@@ -27,6 +28,23 @@ Hotel::Hotel(string name, int idNode)
 {
 	this->name = name;
 	this->idNode = idNode;
+	this->assigned = false;
+}
+
+bool Hotel::getAssigned(){
+	return this->assigned;
+}
+
+void Hotel::setAssigned(bool flag){
+	this->assigned = flag;
+}
+
+unsigned long Hotel::getIdNode(){
+	return this->idNode;
+}
+
+Van::Van(vector<Hotel*> hz){
+	this->hotelZone=hz;
 }
 
 void UserInterface::readHotels()
@@ -63,6 +81,16 @@ void UserInterface::readHotels()
 		hotels.push_back(h);
 
 	}
+
+	gettingHotelsCloser();
+
+	cout<<vans.size()<<endl;
+	for(unsigned int i = 0 ; i<vans.size(); i++){
+		cout<<vans[i]->hotelZone[0]->getIdNode()<<endl;
+		cout<<vans[i]->hotelZone[1]->getIdNode()<<endl;
+	}
+
+	cin.get();
 }
 
 void UserInterface::printHotels()
@@ -287,5 +315,51 @@ void UserInterface::goTo(unsigned long id_dest){
 	cout<<"You are on destiny!"<<endl;
 	cout<<"Total Distance : "<<path[path.size()-1]->dist<<endl;
 }
+
+void UserInterface::gettingHotelsCloser(){
+
+	unsigned int hotelsPerVan = hotels.size()/NUMBER_VANS;
+	unsigned int indexHotel = 0;
+	int distMin = INT_MAX;
+	int indexDistMinMax;
+	int dist;
+
+	vector<Hotel*> zone;
+
+	unsigned int i=0;
+	while(i < NUMBER_VANS){
+
+		if(!hotels[indexHotel]->getAssigned()){
+			i++;
+			hotels[indexHotel]->setAssigned(true);
+			zone.push_back(hotels[indexHotel]);
+
+			for(unsigned int j=1; j<hotelsPerVan; j++){
+
+				for(unsigned int k=0; k<hotels.size();k++){
+					if( k != indexHotel && !hotels[k]->getAssigned()){
+						zone.push_back(hotels[k]);
+						dist = getDistance(graph->getNode(hotels[indexHotel]->getIdNode())->getPoint(), graph->getNode(hotels[k]->getIdNode())->getPoint());
+						if(dist < distMin){
+							distMin = dist;
+							indexDistMinMax = k;
+						}
+					}
+				}
+				hotels[indexDistMinMax]->setAssigned(true);
+				zone.push_back(hotels[indexDistMinMax]);
+				dist = INT_MAX;
+			}
+			indexHotel++;
+			vans.push_back(new Van(zone));
+			zone.clear();
+		}
+		else if(indexHotel < hotels.size()-1){
+			indexHotel++;
+		}
+		else indexHotel = 0;
+	}
+}
+
 
 
