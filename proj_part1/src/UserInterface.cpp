@@ -18,9 +18,10 @@
 #define HOTELS_FILENAME "hotels.txt"
 #define RESERVATIONS_FILENAME "reservations.txt"
 
-UserInterface::UserInterface(Graph *g, int maxPassengers){
+UserInterface::UserInterface(Graph *g, int maxPassengers, Node *source){
 	this->graph = g;
 	this->maxPassengers = maxPassengers;
+	this->source = source;
 }
 
 Hotel::Hotel(string name, Node *n)
