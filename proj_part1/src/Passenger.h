@@ -19,7 +19,7 @@ class Passenger{
 	unsigned int nif;
 
 public:
-	Passenger(string name, unsigned int nif, Node *destino, Reservation *reservation);
+	Passenger(string name, unsigned int nif);
 	string getName();
 	unsigned int getNIF();
 	Reservation* makeReservation(Node *destination, string arrivaltime);

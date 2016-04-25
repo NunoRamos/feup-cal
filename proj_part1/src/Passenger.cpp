@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Passenger::Passenger(string name, unsigned int nif, Node *destino, Reservation *reservation){
+Passenger::Passenger(string name, unsigned int nif){
 	this->name = name;
 	this->nif = nif;
 }
