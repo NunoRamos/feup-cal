@@ -251,8 +251,11 @@ int main(void) {
 	Graph *graph = new Graph(nodeVec);
 	UserInterface *cli = new UserInterface(graph,MAX_PASSENGERS);
 
-	cli->goTo(26015889);
+	//cli->goTo(26015889);
+	cli->readHotels();
+	cli->readReservations();
 	cli->mainMenu();
+
 
 
 

@@ -41,6 +41,7 @@ public:
 	void readHotels();
 	void printHotels();
 	void printReservations();
+	void readReservations();
 };
 
 
