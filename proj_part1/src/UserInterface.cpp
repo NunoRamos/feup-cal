@@ -299,6 +299,7 @@ void UserInterface::mainMenu() {
 		cout<<"\n\n\n";
 		transferMenu();
 		cout<<"\n\n\n";
+		mainMenu();
 		break;
 	case 4:
 		cout<<"\nGoodBye!\n";
