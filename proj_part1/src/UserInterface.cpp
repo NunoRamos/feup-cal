@@ -218,6 +218,55 @@ void UserInterface::reservationMenu() {
 	addReservation(res);
 }
 
+
+void UserInterface::transferMenu(){
+
+	vector<Node *> reserv_vec;
+	Node *currNode = source;
+	Node *nextNode;
+
+	int i = 0;
+
+	//puts the 10 first arrivals in the transfer
+	cout << "Passengers to be transferred:\n";
+	while(!reservations.empty() && i < MAX_PASSENGERS){
+		reserv_vec.push_back(reservations.top()->getDestination());
+		cout << reservations.top()->getClient()->getName()<<endl;
+		reservations.pop();
+		i++;
+	}
+
+
+	while(!reserv_vec.empty()){
+		nextNode = currNode->getClosestNode(reserv_vec);
+		cout<<"next: "<<nextNode->getId()<<endl<<reserv_vec.size()<<endl;cin.get();
+		if(nextNode != currNode){
+			transferTo(currNode->getId(),nextNode->getId());
+			cout << "Client transfered!\n";
+		}
+
+		else{
+			cout << "Client transfered!\n";
+		}
+
+		currNode = nextNode;
+
+
+		for(i = 0; i < reserv_vec.size(); i++){
+			if(reserv_vec[i]->getId() == currNode->getId()){
+				reserv_vec.erase(reserv_vec.begin() + i);
+				break;
+			}
+		}
+	}
+
+	nextNode = source;
+	transferTo(currNode->getId(),nextNode->getId());
+	cout << "\nBack at the airport!\n";
+
+	return;
+}
+
 void UserInterface::mainMenu() {
 	cout<<"Welcome!\n";
 	cout<<"Please choose an option: \n";
@@ -248,7 +297,9 @@ void UserInterface::mainMenu() {
 		mainMenu();
 		break;
 	case 3:
-		//TODO plan the trip for the clients who arrive first
+		cout<<"\n\n\n";
+		transferMenu();
+		cout<<"\n\n\n";
 		break;
 	case 4:
 		cout<<"\nGoodBye!\n";
@@ -257,20 +308,18 @@ void UserInterface::mainMenu() {
 	cin.get();
 }
 
-void UserInterface::transferTo(unsigned long id_dest){
 
-	//unsigned long id_origin = 3713666414; //3713666414 -> 25532201
-	unsigned long id_origin = 112617168; //112617168 -> 126604785
+void UserInterface::transferTo(unsigned long id_from, unsigned long id_dest){
+
 	vector<Node *> path;
 
 
 	graph->resetIndegrees();
-	//graph->bellmanFordShortestPath(id_dest);
-	//cout<<"Dijkstra\n"; cin.get();//TODO remove
-	graph->dijkstraShortestPath(id_origin);
-	//cout<<"Dijkstra over\n";cin.get();
+	graph->dijkstraShortestPath(id_from);
 
-	path = graph->getPath(id_origin, id_dest);
+	path = graph->getPath(id_from, id_dest);
+	if(path.size() == 0)
+		return;
 
 	string oldRoadName = "1";
 
@@ -289,11 +338,8 @@ void UserInterface::transferTo(unsigned long id_dest){
 				}
 			}
 		}
-		cout<<" Passing Node "<<path[i]->getId()<<endl;
+		//cout<<" Passing Node "<<path[i]->getId()<<endl;
 	}
-
-	cout<<"You are on destiny!"<<endl;
-	cout<<"Total Distance : "<<path[path.size()-1]->dist<<endl;
 }
 
 

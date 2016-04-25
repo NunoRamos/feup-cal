@@ -15,14 +15,6 @@
 #include <sstream>
 #include <cstring>
 
-#define NODES_FILENAME "test_nodes.txt"
-#define ROADS_FILENAME "test_roads.txt"
-#define SUBRD_FILENAME "test_subroads.txt"
-
-//airport node
-#define SOURCE_NODE_ID 4029232089
-
-#define MAX_PASSENGERS 10
 
 
 using namespace std;

@@ -13,6 +13,15 @@
 #include "Reservation.h"
 #include <queue>
 
+#define NODES_FILENAME "test_nodes.txt"
+#define ROADS_FILENAME "test_roads.txt"
+#define SUBRD_FILENAME "test_subroads.txt"
+
+//airport node
+#define SOURCE_NODE_ID 112640154
+#define MAX_PASSENGERS 10
+
+
 class Hotel
 {
 	string name;
@@ -62,9 +71,9 @@ public:
 	void transportPassengers();
 
 	/**
-	 * \brief gets the path to the node with the ID id
+	 * \brief gets the path to the node with the ID id_dest from the node with the ID id_from
 	 */
-	void transferTo(unsigned long id);
+	void transferTo(unsigned long id_from, unsigned long id_dest);
 
 	/**
 	 * \brief displays the menu of the reservations
@@ -90,6 +99,11 @@ public:
 	 * \brief reads all the reservations from a file and puts them in a priority queue which has the next reservation in the top
 	 */
 	void readReservations();
+
+	/**
+	 * \brief displays the passengers that will be transfered and the path that will be taken
+	 */
+	void transferMenu();
 };
 
 

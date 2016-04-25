@@ -81,7 +81,7 @@ Coordinates Node::getCoordinates() {
 	return *coords;
 }
 
-Point Node::getPoint() {
+Point Node::getPoint() const{
 	return *point;
 }
 
@@ -98,6 +98,20 @@ int Node::getIndegree(){
 	return indegree;
 }
 
+Node *Node::getClosestNode(const vector <Node *>vec) const{
+
+	Node *min = vec[0];
+	double minDistance = getDistance(this->getPoint(), vec[0]->getPoint());
+	for(unsigned int i = 1; i < vec.size(); i++){
+		double currDistance = getDistance(this->getPoint(), vec[i]->getPoint());
+		if(currDistance < minDistance){
+			min = vec[i];
+			minDistance = currDistance;
+		}
+	}
+
+	return min;
+}
 
 //********GRAPH************
 Graph::Graph(vector<Node *> vertexSet){
@@ -178,6 +192,12 @@ void Graph::dijkstraShortestPath(unsigned long source){
 }
 
 vector<Node*> Graph::getPath(unsigned long id_origin, unsigned long id_dest){
+
+	vector<Node *> res;
+
+	if(id_origin == id_dest)
+		return res;
+
 	list<Node *> buffer;
 	Node* v = getNode(id_dest);
 	buffer.push_front(v);
@@ -195,7 +215,7 @@ vector<Node*> Graph::getPath(unsigned long id_origin, unsigned long id_dest){
 		buffer.push_front(v->path);
 
 
-	vector<Node *> res;
+
 	while( !buffer.empty() ) {
 		res.push_back( buffer.front() );
 		buffer.pop_front();
