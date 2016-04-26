@@ -90,7 +90,7 @@ void UserInterface::readHotels()
 
 	}
 
-	gettingHotelsCloser();
+	getClosestHotels();
 
 	cout<<vans.size()<<endl;
 	for(unsigned int i = 0 ; i<vans.size(); i++){
@@ -370,7 +370,7 @@ void UserInterface::transferTo(unsigned long id_from, unsigned long id_dest){
 	}
 }
 
-void UserInterface::gettingHotelsCloser(){
+void UserInterface::getClosestHotels(){
 
 	unsigned int hotelsPerVan = hotels.size()/NUMBER_VANS;
 	unsigned int indexHotel = 0;
@@ -383,12 +383,12 @@ void UserInterface::gettingHotelsCloser(){
 	unsigned int i=0;
 	while(i < NUMBER_VANS){
 
-		if(!hotels[indexHotel]->getAssigned()){
+		if(!hotels[indexHotel]->getAssigned()){ //finds the first unassigned hotel
 			i++;
 			hotels[indexHotel]->setAssigned(true);
 			zone.push_back(hotels[indexHotel]);
 
-			for(unsigned int j=1; j<hotelsPerVan; j++){
+			for(unsigned int j=1; j<hotelsPerVan; j++){  //fills the vector with the closest hotels
 
 				for(unsigned int k=0; k<hotels.size();k++){
 					if( k != indexHotel && !hotels[k]->getAssigned()){
@@ -402,7 +402,7 @@ void UserInterface::gettingHotelsCloser(){
 				}
 				hotels[indexDistMinMax]->setAssigned(true);
 				zone.push_back(hotels[indexDistMinMax]);
-				dist = INT_MAX;
+				distMin = INT_MAX;
 			}
 			indexHotel++;
 			vans.push_back(new Van(zone));
@@ -413,6 +413,43 @@ void UserInterface::gettingHotelsCloser(){
 		}
 		else indexHotel = 0;
 	}
+
+
+	//gets the unassigned hotels (if there are any) and assigns them to the vans that serve the closest hotels
+
+	vector<Hotel *> unassignedHotels;
+
+	for(unsigned int m = 0; m < hotels.size(); m++){
+		if(!hotels[m]->getAssigned())
+			unassignedHotels.push_back(hotels[m]);
+	}
+
+	cout<<"There are "<<unassignedHotels.size()<<" unassigned hotels\n";
+	int minVan;
+
+	for(unsigned int m = 0; m < unassignedHotels.size(); m++){
+		distMin = INT_MAX;
+
+		for(unsigned int n = 0; n < vans.size(); i++){
+			dist = getDistance(vans[n]->hotelZone[0]->getNode()->getPoint(),unassignedHotels[m]->getNode()->getPoint());
+
+			if(dist < distMin){
+				distMin = dist;
+				minVan = n;
+			}
+		}
+
+		vans[minVan]->hotelZone.push_back(unassignedHotels[m]);
+
+	}
+
+	for(unsigned int m = 0; m < hotels.size(); m++){
+		if(!hotels[m]->getAssigned())
+			unassignedHotels.push_back(hotels[m]);
+	}
+
+	cout<<"There are "<<unassignedHotels.size()<<" unassigned hotels\n";
+
 }
 
 

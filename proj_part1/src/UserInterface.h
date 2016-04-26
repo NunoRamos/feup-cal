@@ -120,7 +120,7 @@ public:
 	 * \brief displays the passengers that will be transfered and the path that will be taken
 	 */
 	void transferMenu();
-	void gettingHotelsCloser();
+	void getClosestHotels();
 };
 
 
