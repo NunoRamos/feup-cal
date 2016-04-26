@@ -1,11 +1,21 @@
+/*
+ * Coordinates.h
+ *
+ *  Created on: Apr 18, 2016
+ *      Author: Daniel Garrido, Edgar Passos, Nuno Ramos
+ */
+
+#ifndef COORDINATES_H
+#define COORDINATES_H
+
 #include <iostream>
 #include <cmath>
 
 /**
  * \brief class that holds the geographical position of a certain Node
  */
-class Coordinates{
-	double lon,lat;
+class Coordinates {
+	double lon, lat;
 
 public:
 	/**
@@ -24,11 +34,10 @@ public:
 	double getLatitude() const;
 };
 
-
 /**
  * \class that holds the geographical position of a certain Node as an x,y pair where x and y are the latitude and longitude in radians
  */
-class Point{
+class Point {
 	double x, y;
 
 public:
@@ -52,4 +61,6 @@ public:
  * \brief function used to get the distance between two geographical locations
  *
  */
-double getDistance(const Point c1,const Point c2);
+double getDistance(const Point c1, const Point c2);
+
+#endif

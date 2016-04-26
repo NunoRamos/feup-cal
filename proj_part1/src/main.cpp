@@ -15,8 +15,6 @@
 #include <sstream>
 #include <cstring>
 
-
-
 using namespace std;
 /**
  * \brief function that reads the nodes from a file and stores them in a vector
@@ -40,44 +38,43 @@ vector<Node *> readNodes(const char* filename) {
 		file_buf.clear();
 
 		while (!file.eof()) {
-			if(getline(file, file_buf, ';')){
-				ss<<file_buf;
+			if (getline(file, file_buf, ';')) {
+				ss << file_buf;
 				ss >> id;
 				file_buf.clear();
 				ss.clear();
 			}
 
-
-			if (getline(file, file_buf, ';')){
-				ss<<file_buf;
+			if (getline(file, file_buf, ';')) {
+				ss << file_buf;
 				ss >> lat;
 				file_buf.clear();
 				ss.clear();
 			}
 
-			if (getline(file, file_buf, ';')){
-				ss<<file_buf;
+			if (getline(file, file_buf, ';')) {
+				ss << file_buf;
 				ss >> lon;
 				file_buf.clear();
 				ss.clear();
 			}
 
-			if (getline(file, file_buf, ';')){
-				ss<<file_buf;
+			if (getline(file, file_buf, ';')) {
+				ss << file_buf;
 				ss >> x;
 				file_buf.clear();
 				ss.clear();
 			}
 
-			if (getline(file, file_buf)){
-				ss<<file_buf;
+			if (getline(file, file_buf)) {
+				ss << file_buf;
 				ss >> y;
 				file_buf.clear();
 				ss.clear();
 			}
 
 			newCoord = new Coordinates(lon, lat);
-		//	cout<<"x : "<<x;
+			//	cout<<"x : "<<x;
 			//cout<<"y : "<<y<<endl;
 			newPoint = new Point(x, y);
 			newNode = new Node(id, newCoord, newPoint);
@@ -114,7 +111,7 @@ vector<Road *> readRoads(const char* filename, vector<unsigned long> &ids) {
 		string name;
 		bool twoWay = false;
 
-		if (getline(file, buff, ';')){
+		if (getline(file, buff, ';')) {
 			ss << buff;
 			ss >> id;
 			ss.clear();
@@ -124,10 +121,11 @@ vector<Road *> readRoads(const char* filename, vector<unsigned long> &ids) {
 
 		if (getline(file, buff)) {
 
-			if(buff.c_str()[0] == 'F')
+			if (buff.c_str()[0] == 'F')
 				twoWay = false;
 
-			else twoWay = true;
+			else
+				twoWay = true;
 		}
 
 		Road *newRoad = new Road(id, name, twoWay);
@@ -154,7 +152,6 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 	ifstream file;
 	file.open(filename);
 
-
 	if (!file.is_open())
 		return;
 
@@ -169,19 +166,19 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 		unsigned long edgeID, nodeFromID, nodeToID;
 		Node *nodeFrom, *nodeTo;
 
-		if (getline(file, buff, ';')){
+		if (getline(file, buff, ';')) {
 			ss << buff;
 			ss >> edgeID;
 			ss.clear();
 		}
 
-		if (getline(file, buff, ';')){
+		if (getline(file, buff, ';')) {
 			ss << buff;
 			ss >> nodeFromID;
 			ss.clear();
 		}
 
-		if (getline(file, buff)){
+		if (getline(file, buff)) {
 			ss << buff;
 			ss >> nodeToID;
 			ss.clear();
@@ -189,43 +186,41 @@ void readEdges(const char *filename, vector<Node *> &nodes,
 
 		bool foundMatch = false;
 
-		for(unsigned int i = 0; i<roads.size(); i++){
-			if (roads[i]->getID() == edgeID){
+		for (unsigned int i = 0; i < roads.size(); i++) {
+			if (roads[i]->getID() == edgeID) {
 				twoway = roads[i]->isTwoWay();
 				currRoad = roads[i];
 				foundMatch = true;
 			}
 		}
 
-		if(!foundMatch){
-			cout<<"Search failure\n";
+		if (!foundMatch) {
+			cout << "Search failure\n";
 			cin.get();
 			continue;
 		}
 
-
-
-		for(unsigned int i = 0; i<nodes.size(); i++){
-			if(nodes[i]->getId() == nodeFromID)
+		for (unsigned int i = 0; i < nodes.size(); i++) {
+			if (nodes[i]->getId() == nodeFromID)
 				nodeFrom = nodes[i];
 
-			if(nodes[i]->getId() == nodeToID)
+			if (nodes[i]->getId() == nodeToID)
 				nodeTo = nodes[i];
 		}
 
-		if(nodeFrom == NULL){
+		if (nodeFrom == NULL) {
 			cout << "nodeFrom from not found\n";
 			continue;
 		}
 
-		if(nodeTo == NULL){
+		if (nodeTo == NULL) {
 			cout << "nodeTo not found\n";
 			continue;
 		}
 
 		nodeFrom->addEdgeTo(nodeTo, new Edge(currRoad));
 
-		if(twoway){
+		if (twoway) {
 			nodeTo->addEdgeTo(nodeFrom, new Edge(currRoad));
 		}
 	}
@@ -248,19 +243,15 @@ int main(void) {
 	Graph *graph = new Graph(nodeVec);
 	Node *source = graph->getNode(SOURCE_NODE_ID);
 
-	if(source == NULL){
+	if (source == NULL) {
 		cout << "Source node not found!\n";
 		exit(30);
 	}
-	UserInterface *cli = new UserInterface(graph,MAX_PASSENGERS,source);
-
+	UserInterface *cli = new UserInterface(graph, MAX_PASSENGERS, source);
 
 	cli->readHotels();
 	cli->readReservations();
 	cli->mainMenu();
-
-
-
 
 	return 0;
 }

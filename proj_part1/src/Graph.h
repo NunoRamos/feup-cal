@@ -1,8 +1,8 @@
 /*
- * main.h
+ * Graph.h
  *
  *  Created on: Apr 18, 2016
- *      Author: epassos
+ *      Author: Daniel Garrido, Edgar Passos, Nuno Ramos
  */
 
 #ifndef SRC_GRAPH_H_
@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include "Coordinates.h"
+#include "Reservation.h"
 #include <climits>
 #include <queue>
 #include <list>
@@ -24,7 +25,7 @@ class Road;
  *
  *	this info is not immediately useful for going through the graph
  */
-class Road{
+class Road {
 	unsigned long id;
 	std::string name;
 	bool twoWay;
@@ -34,7 +35,7 @@ public:
 	/**
 	 * \brief Basic Road class constructor
 	 */
-	Road(unsigned long id,std::string name,bool twoWay);
+	Road(unsigned long id, std::string name, bool twoWay);
 
 	/**
 	 * \brief returns the ID of the Road
@@ -56,7 +57,7 @@ public:
 /**
  *\brief class that connects the Nodes of the Graph
  */
-class Edge{
+class Edge {
 	Node *dest; ///< destination of the Edge
 	Road *road; ///< Road that stores the information relative to this Edge (name, ID, etc...)
 	float weight; ///< "length" of the road, used in calculating fastest path to a Node
@@ -74,7 +75,7 @@ public:
 	/**
 	 * \brief sets the destination Node, calls the getDistance function of Coordinates.h to set the weight of the Edge
 	 */
-	void setDest(Node *from,Node *to);
+	void setDest(Node *from, Node *to);
 
 	/**
 	 * \brief Returns the destination Node
@@ -85,16 +86,16 @@ public:
 	friend class Graph;
 };
 
-
 /**
  * \brief class that refers to certain points on a map that are reachable through Edges
  */
-class Node{
+class Node {
 	unsigned long id; ///< Node ID
 	Coordinates* coords; ///< Coordinate position of the Node
 	Point* point;	///< Coordinate position in radians
 	bool visited; ///< boolean that is set to true when a Node has been reached
-	public :std::vector<Edge *> adj; ///< Edges that go from this Node to another Node
+public:
+	std::vector<Edge *> adj; ///< Edges that go from this Node to another Node
 	int indegree; ///<Number of edges enter on the node
 	bool processing; ///<If the node is being processed
 	double dist; ///<Distance to the source node
@@ -157,13 +158,13 @@ public:
 	/**
 	 * \brief gets the closest Node from a vector
 	 */
-	Node *getClosestNode(const std::vector<Node *> vec) const;
+	Reservation getClosestDestination(const std::vector<Reservation> vec) const;
 };
 
 /**
  * \brief class that holds a set of Nodes connected by Edges
  */
-class Graph{
+class Graph {
 
 public:
 	std::vector<Node *> vertexSet;
@@ -184,7 +185,7 @@ public:
 	 *
 	 * \ret returns true if sucessful
 	 */
-	bool addNode(unsigned long id,double lat,double lon,double x,double y);
+	bool addNode(unsigned long id, double lat, double lon, double x, double y);
 
 	/**
 	 * \brief removes a Node from a graph, to be searched by its latitude and longitude
@@ -192,7 +193,6 @@ public:
 	 * \ret true if sucessful
 	 */
 	bool removeNode(double lat, double lon);
-
 
 	/**
 	 * \brief adds an already created Edge to a Graph

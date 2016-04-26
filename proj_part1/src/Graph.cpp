@@ -10,52 +10,49 @@ using namespace std;
 
 const int INT_INFINITY = INT_MAX;
 
-struct node_greater_than{
-	bool operator()(const Node *n1, const Node *n2){
+struct node_greater_than {
+	bool operator()(const Node *n1, const Node *n2) {
 		return n1->dist > n2->dist;
 	}
 };
 
-
 //******ROAD************
-Road::Road(unsigned long id, string name, bool twoWay){
+Road::Road(unsigned long id, string name, bool twoWay) {
 	this->id = id;
 	this->name = name;
 	this->twoWay = twoWay;
 }
 
-
-string Road::getName() const{
+string Road::getName() const {
 	return name;
 }
 
-unsigned long Road::getID() const{
+unsigned long Road::getID() const {
 	return id;
 }
 
-bool Road::isTwoWay() const{
+bool Road::isTwoWay() const {
 	return twoWay;
 }
 
 //******EDGE************
-Edge::Edge(Road *road){
+Edge::Edge(Road *road) {
 	this->road = road;
 	this->dest = NULL;
 }
 
-Road* Edge::getRoad() const{
+Road* Edge::getRoad() const {
 	return road;
 }
 
-void Edge::setDest(Node *from, Node *to){
+void Edge::setDest(Node *from, Node *to) {
 	this->dest = to;
 	this->weight = getDistance(from->getPoint(), to->getPoint());
 }
 
-Node* Edge::getDest() const{
+Node* Edge::getDest() const {
 	return dest;
 }
-
 
 //******NODE************
 
@@ -81,7 +78,7 @@ Coordinates Node::getCoordinates() {
 	return *coords;
 }
 
-Point Node::getPoint() const{
+Point Node::getPoint() const {
 	return *point;
 }
 
@@ -89,22 +86,25 @@ bool Node::wasVisited() {
 	return visited;
 }
 
-bool Node::addEdgeTo(Node *n, Edge *e){
-	e->setDest(this,n);
+bool Node::addEdgeTo(Node *n, Edge *e) {
+	e->setDest(this, n);
 	this->adj.push_back(e);
 }
 
-int Node::getIndegree(){
+int Node::getIndegree() {
 	return indegree;
 }
 
-Node *Node::getClosestNode(const vector <Node *>vec) const{
+Reservation Node::getClosestDestination(const vector<Reservation> vec) const {
 
-	Node *min = vec[0];
-	double minDistance = getDistance(this->getPoint(), vec[0]->getPoint());
-	for(unsigned int i = 1; i < vec.size(); i++){
-		double currDistance = getDistance(this->getPoint(), vec[i]->getPoint());
-		if(currDistance < minDistance){
+	Reservation min = vec[0];
+	double minDistance = getDistance(this->getPoint(),
+			vec[0].getDestination()->getPoint());
+
+	for (unsigned int i = 1; i < vec.size(); i++) {
+		double currDistance = getDistance(this->getPoint(),
+				vec[i].getDestination()->getPoint());
+		if (currDistance < minDistance) {
 			min = vec[i];
 			minDistance = currDistance;
 		}
@@ -114,27 +114,27 @@ Node *Node::getClosestNode(const vector <Node *>vec) const{
 }
 
 //********GRAPH************
-Graph::Graph(vector<Node *> vertexSet){
+Graph::Graph(vector<Node *> vertexSet) {
 	this->vertexSet = vertexSet;
 }
 
-void Graph::resetIndegrees(){
+void Graph::resetIndegrees() {
 
-	for(unsigned int i=0; i<vertexSet.size(); i++){
-		vertexSet[i]->indegree=0;
+	for (unsigned int i = 0; i < vertexSet.size(); i++) {
+		vertexSet[i]->indegree = 0;
 	}
 
-	for(unsigned int i=0; i<vertexSet.size(); i++){
-		for(unsigned int j=0; j<vertexSet[i]->adj.size(); j++){
+	for (unsigned int i = 0; i < vertexSet.size(); i++) {
+		for (unsigned int j = 0; j < vertexSet[i]->adj.size(); j++) {
 			vertexSet[i]->adj[j]->dest->indegree++;
 		}
 	}
 
 }
 
-void Graph::bellmanFordShortestPath(unsigned long id_dest){
+void Graph::bellmanFordShortestPath(unsigned long id_dest) {
 
-	for(unsigned int i = 0; i < vertexSet.size(); i++) {
+	for (unsigned int i = 0; i < vertexSet.size(); i++) {
 		vertexSet[i]->path = NULL;
 		vertexSet[i]->dist = INT_INFINITY;
 	}
@@ -144,11 +144,12 @@ void Graph::bellmanFordShortestPath(unsigned long id_dest){
 	queue<Node*> q;
 	q.push(v);
 
-	while( !q.empty() ) {
-		v = q.front(); q.pop();
-		for(unsigned int i = 0; i < v->adj.size(); i++) {
+	while (!q.empty()) {
+		v = q.front();
+		q.pop();
+		for (unsigned int i = 0; i < v->adj.size(); i++) {
 			Node* w = v->adj[i]->dest;
-			if(v->dist + v->adj[i]->weight < w->dist) {
+			if (v->dist + v->adj[i]->weight < w->dist) {
 				w->dist = v->dist + v->adj[i]->weight;
 				w->path = v;
 				q.push(w);
@@ -157,8 +158,8 @@ void Graph::bellmanFordShortestPath(unsigned long id_dest){
 	}
 }
 
-void Graph::dijkstraShortestPath(unsigned long source){
-	for(unsigned int i = 0; i < vertexSet.size(); i++) {
+void Graph::dijkstraShortestPath(unsigned long source) {
+	for (unsigned int i = 0; i < vertexSet.size(); i++) {
 		vertexSet[i]->path = NULL;
 		vertexSet[i]->dist = INT_INFINITY;
 		vertexSet[i]->processing = false;
@@ -169,67 +170,61 @@ void Graph::dijkstraShortestPath(unsigned long source){
 	Node *v = getNode(source);
 	q.push_back(v);
 	v->dist = 0;
-	//cout<<"Im In\n";cin.get();
-	while(!q.empty()){
-		v=q.front(); q.erase(q.begin());
-		for(unsigned int i = 0; i < v->adj.size() ;i++){
+	while (!q.empty()) {
+		v = q.front();
+		q.erase(q.begin());
+		for (unsigned int i = 0; i < v->adj.size(); i++) {
 			Node *w = v->adj[i]->getDest();
 
-
-			if(v->dist + v->adj[i]->weight < w->dist){
+			if (v->dist + v->adj[i]->weight < w->dist) {
 				w->dist = v->dist + v->adj[i]->weight;
 				w->path = v;
 
-				if(!w->processing){
+				if (!w->processing) {
 					q.push_back(w);
 					w->processing = true;
 				}
 
-				make_heap(q.begin(),q.end(),node_greater_than());
+				make_heap(q.begin(), q.end(), node_greater_than());
 			}
 		}
 	}
 }
 
-vector<Node*> Graph::getPath(unsigned long id_origin, unsigned long id_dest){
+vector<Node*> Graph::getPath(unsigned long id_origin, unsigned long id_dest) {
 
 	vector<Node *> res;
 
-	if(id_origin == id_dest)
+	if (id_origin == id_dest)
 		return res;
 
 	list<Node *> buffer;
 	Node* v = getNode(id_dest);
 	buffer.push_front(v);
 
-	cout<<v->id<<"\n";
+	if (v->path == NULL)
+		cout << "\nFALHOU\n";
 
-	if(v->path == NULL)
-		cout<<"\nFALHOU\n";
-
-	while ( v->path != NULL &&  v->path->id != id_origin) {
+	while (v->path != NULL && v->path->id != id_origin) {
 		v = v->path;
 		buffer.push_front(v);
 	}
-	if( v->path != NULL )
+	if (v->path != NULL)
 		buffer.push_front(v->path);
 
-
-
-	while( !buffer.empty() ) {
-		res.push_back( buffer.front() );
+	while (!buffer.empty()) {
+		res.push_back(buffer.front());
 		buffer.pop_front();
 	}
 	return res;
 }
 
-Node* Graph::getNode(unsigned long id){
-	for(unsigned int i=0; i<vertexSet.size(); i++){
-		if(vertexSet[i]->id == id)
+Node* Graph::getNode(unsigned long id) {
+	for (unsigned int i = 0; i < vertexSet.size(); i++) {
+		if (vertexSet[i]->id == id)
 			return vertexSet[i];
 	}
 
 	return NULL;
 }
-
 

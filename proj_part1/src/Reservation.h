@@ -8,13 +8,13 @@
 #ifndef RESERVATION_H_
 #define RESERVATION_H_
 #include <string>
-#include "Graph.h"
 #include <sstream>
 
 class Passenger;
+class Node;
 using namespace std;
 
-class Reservation{
+class Reservation {
 
 	Node *destination;
 	string arrivalTime;
