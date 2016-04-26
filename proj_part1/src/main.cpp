@@ -257,7 +257,7 @@ int main(void) {
 
 	cli->readHotels();
 	cli->readReservations();
-	cli->mainMenu();
+	//cli->mainMenu();
 
 
 

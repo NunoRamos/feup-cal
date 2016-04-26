@@ -26,6 +26,7 @@ class Hotel
 {
 	string name;
 	Node *node;
+	bool assigned;
 public:
 	/**
 	 * \brief class constructor
@@ -34,7 +35,18 @@ public:
 	 * \arg n Node that refers to the position of the Hotel
 	 */
 	Hotel(string name, Node *n);
+	bool getAssigned();
+	void setAssigned(bool flag);
+	Node *getNode()const;
 	friend class UserInterface;
+};
+
+class Van{
+
+
+public:
+	vector<Hotel*> hotelZone;
+	Van(vector<Hotel*> hz);
 };
 
 class UserInterface{
@@ -44,6 +56,8 @@ class UserInterface{
 	int maxPassengers;
 	vector<Hotel*> hotels;
 	Node *source;
+	vector<Van*> vans;
+
 
 public:
 
@@ -106,6 +120,7 @@ public:
 	 * \brief displays the passengers that will be transfered and the path that will be taken
 	 */
 	void transferMenu();
+	void gettingHotelsCloser();
 };
 
 

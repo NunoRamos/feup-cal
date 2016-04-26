@@ -42,3 +42,5 @@ double getDistance(const Point c1,const Point c2){
 
 	return dist;
 }
+
+

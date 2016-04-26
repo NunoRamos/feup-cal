@@ -17,6 +17,7 @@
 
 #define HOTELS_FILENAME "hotels.txt"
 #define RESERVATIONS_FILENAME "reservations.txt"
+#define NUMBER_VANS 2
 
 UserInterface::UserInterface(Graph *g, int maxPassengers, Node *source){
 	this->graph = g;
@@ -28,6 +29,23 @@ Hotel::Hotel(string name, Node *n)
 {
 	this->name = name;
 	this->node = n;
+	this->assigned = false;
+}
+
+bool Hotel::getAssigned(){
+	return this->assigned;
+}
+
+void Hotel::setAssigned(bool flag){
+	this->assigned = flag;
+}
+
+Node *Hotel::getNode() const{
+	return node;
+}
+
+Van::Van(vector<Hotel*> hz){
+	this->hotelZone=hz;
 }
 
 void UserInterface::readHotels()
@@ -71,6 +89,16 @@ void UserInterface::readHotels()
 		hotels.push_back(h);
 
 	}
+
+	gettingHotelsCloser();
+
+	cout<<vans.size()<<endl;
+	for(unsigned int i = 0 ; i<vans.size(); i++){
+		cout<<vans[i]->hotelZone[0]->getNode()->getId()<<endl;
+		cout<<vans[i]->hotelZone[1]->getNode()->getId()<<endl;
+	}
+
+	cin.get();
 }
 
 void UserInterface::printHotels()
@@ -341,5 +369,51 @@ void UserInterface::transferTo(unsigned long id_from, unsigned long id_dest){
 		//cout<<" Passing Node "<<path[i]->getId()<<endl;
 	}
 }
+
+void UserInterface::gettingHotelsCloser(){
+
+	unsigned int hotelsPerVan = hotels.size()/NUMBER_VANS;
+	unsigned int indexHotel = 0;
+	double distMin = INT_MAX;
+	int indexDistMinMax;
+	double dist;
+
+	vector<Hotel*> zone;
+
+	unsigned int i=0;
+	while(i < NUMBER_VANS){
+
+		if(!hotels[indexHotel]->getAssigned()){
+			i++;
+			hotels[indexHotel]->setAssigned(true);
+			zone.push_back(hotels[indexHotel]);
+
+			for(unsigned int j=1; j<hotelsPerVan; j++){
+
+				for(unsigned int k=0; k<hotels.size();k++){
+					if( k != indexHotel && !hotels[k]->getAssigned()){
+						zone.push_back(hotels[k]);
+						dist = getDistance(hotels[indexHotel]->getNode()->getPoint(), hotels[k]->getNode()->getPoint());
+						if(dist < distMin){
+							distMin = dist;
+							indexDistMinMax = k;
+						}
+					}
+				}
+				hotels[indexDistMinMax]->setAssigned(true);
+				zone.push_back(hotels[indexDistMinMax]);
+				dist = INT_MAX;
+			}
+			indexHotel++;
+			vans.push_back(new Van(zone));
+			zone.clear();
+		}
+		else if(indexHotel < hotels.size()-1){
+			indexHotel++;
+		}
+		else indexHotel = 0;
+	}
+}
+
 
 
