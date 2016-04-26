@@ -331,17 +331,19 @@ void UserInterface::displayGraph()
 	gv->defineEdgeColor("blue");
 	gv->defineVertexColor("yellow");
 
+	gv->setBackground("image.png");
+
 	for(unsigned int i = 0; i < graph->vertexSet.size(); i++)
 	{
 		double lat = graph->vertexSet[i]->getCoordinates().getLatitude();
 		double lng = graph->vertexSet[i]->getCoordinates().getLongitude();
 		int x, y;
 
-		x = floor(((lng-minLng)*4200/(maxLng-minLng)));
-		y = 4200-floor(((lat-minLat)*4200/(maxLat-minLat)));
+		x = floor(((lng-minLng)*1920/(maxLng-minLng)));
+		y = 4200-floor(((lat-minLat)*1080/(maxLat-minLat)));
 
 		gv->addNode(graph->vertexSet[i]->getId(), x, y);
-		gv->setVertexLabel(graph->vertexSet[i]->getId(), ".");
+		//gv->setVertexLabel(graph->vertexSet[i]->getId(), ".");
 
 	}
 
@@ -360,7 +362,9 @@ void UserInterface::displayGraph()
 	for(unsigned int i = 0; i < hotels.size(); i++)
 	{
 		gv->setVertexColor(hotels[i]->node->getId(), GREEN);
+		gv->setVertexLabel(hotels[i]->node->getId(), hotels[i]->name);
 	}
+
 
 
 	gv->rearrange();
