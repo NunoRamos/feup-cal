@@ -11,6 +11,7 @@
 #include "Graph.h"
 #include "Passenger.h"
 #include "Reservation.h"
+#include "graphviewer.h"
 #include <queue>
 
 #define NODES_FILENAME "test_nodes.txt"
@@ -79,6 +80,9 @@ class UserInterface {
 	Node *source;
 	vector<Van*> vans;
 
+	double maxLat, minLat, maxLng, minLng;
+
+
 public:
 
 	/**
@@ -139,6 +143,10 @@ public:
 	 * \brief displays the passengers that will be transfered and the path that will be taken
 	 */
 	void transferMenu();
+
+	void updateCoordinates();
+
+	void displayGraph();
 
 	/**
 	 * \brief sets a vector of hotels to be served by each van
