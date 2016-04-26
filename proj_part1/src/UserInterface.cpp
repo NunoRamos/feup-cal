@@ -254,8 +254,11 @@ void UserInterface::transferMenu(){
 
 	int i = 0;
 
+	assignToVans();
+	cin.get();
+
 	//puts the 10 first arrivals in the transfer
-	cout << "Passengers to be transferred:\n";
+	/**cout << "Passengers to be transferred:\n";
 	while(!reservations.empty() && i < MAX_PASSENGERS){
 		reserv_vec.push_back(reservations.top().getDestination());
 		cout << reservations.top().getClient()->getName()<<endl;
@@ -291,7 +294,7 @@ void UserInterface::transferMenu(){
 	transferTo(currNode->getId(),nextNode->getId());
 	cout << "\nBack at the airport!\n";
 
-	return;
+	return;*/
 }
 
 void UserInterface::mainMenu() {
@@ -392,7 +395,7 @@ void UserInterface::getClosestHotels(){
 
 				for(unsigned int k=0; k<hotels.size();k++){
 					if( k != indexHotel && !hotels[k]->getAssigned()){
-						zone.push_back(hotels[k]);
+						//zone.push_back(hotels[k]);
 						dist = getDistance(hotels[indexHotel]->getNode()->getPoint(), hotels[k]->getNode()->getPoint());
 						if(dist < distMin){
 							distMin = dist;
@@ -424,7 +427,6 @@ void UserInterface::getClosestHotels(){
 			unassignedHotels.push_back(hotels[m]);
 	}
 
-	cout<<"There are "<<unassignedHotels.size()<<" unassigned hotels\n";
 	int minVan;
 
 	for(unsigned int m = 0; m < unassignedHotels.size(); m++){
@@ -450,7 +452,42 @@ void UserInterface::getClosestHotels(){
 
 	cout<<"There are "<<unassignedHotels.size()<<" unassigned hotels\n";
 
+	for(unsigned int i = 0; i < vans.size(); i++){
+		for(unsigned int j = 0; j < vans[i]->hotelZone.size(); j++){
+			cout<<"Hotel "<<vans[i]->hotelZone[j]->getNode()->getId()<<" assigned to van "<< i<<endl;
+		}
+	}
 }
 
 
+void UserInterface::assignToVans(){
 
+	priority_queue<Reservation> temp;
+
+	while(!reservations.empty()){
+		for(unsigned int i = 0; i < vans.size(); i++){
+			for(unsigned int j = 0; j < vans[i]->hotelZone.size(); j++){
+
+				if(vans[i]->hotelZone[j]->getNode()->getId() == reservations.top().getDestination()->getId()){
+					if(vans[i]->passengers.size() < MAX_PASSENGERS){
+						cout<<"Passenger "<<reservations.top().getClient()->getName()
+								<<" assigned to van "<<i<<endl;
+						vans[i]->passengers.push_back(reservations.top());
+						reservations.pop();
+
+					}
+
+					else{
+						temp.push(reservations.top());
+						reservations.pop();
+					}
+				}
+			}
+		}
+	}
+
+	while(!temp.empty()){
+		reservations.push(temp.top());
+		temp.pop();
+	}
+}

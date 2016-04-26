@@ -42,11 +42,11 @@ public:
 };
 
 class Van{
-
-
-public:
 	vector<Hotel*> hotelZone;
+	vector<Reservation> passengers;
+public:
 	Van(vector<Hotel*> hz);
+	friend class UserInterface;
 };
 
 class UserInterface{
@@ -121,6 +121,7 @@ public:
 	 */
 	void transferMenu();
 	void getClosestHotels();
+	void assignToVans();
 };
 
 
