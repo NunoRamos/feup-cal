@@ -112,7 +112,7 @@ public:
 	/**
 	 * \brief gets the path to the node with the ID id_dest from the node with the ID id_from
 	 */
-	void transferTo(unsigned long id_from, unsigned long id_dest);
+	vector<Node *> transferTo(unsigned long id_from, unsigned long id_dest);
 
 	/**
 	 * \brief displays the menu of the reservations
@@ -146,7 +146,7 @@ public:
 
 	void updateCoordinates();
 
-	void displayGraph();
+	void displayGraph(vector<Node *> path);
 
 	/**
 	 * \brief sets a vector of hotels to be served by each van

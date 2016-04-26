@@ -254,6 +254,8 @@ void UserInterface::transferMenu() {
 
 	for (unsigned int i = 0; i < vans.size(); i++) {
 
+		vector<Node * > total_path;
+
 		Node *currNode = source;
 		Node *nextNode;
 
@@ -261,12 +263,16 @@ void UserInterface::transferMenu() {
 			continue;
 
 		while (!vans[i]->passengers.empty()) {
+			vector<Node * > semi_path;
 			Reservation nextPassenger = currNode->getClosestDestination(
 					vans[i]->passengers);
 			nextNode = nextPassenger.getDestination();
 
-			if (nextNode != currNode)
-				transferTo(currNode->getId(), nextNode->getId());
+			if (nextNode != currNode){
+				semi_path = transferTo(currNode->getId(), nextNode->getId());
+				total_path.insert(total_path.end(), semi_path.begin(), semi_path.end());
+				semi_path.clear();
+			}
 
 			cout << "Van " << i << " transfered client "
 					<< nextPassenger.getClient()->getName() << endl;
@@ -283,6 +289,9 @@ void UserInterface::transferMenu() {
 
 		}
 
+		displayGraph(total_path);
+		cin.get();
+		total_path.clear();
 		nextNode = source;
 		transferTo(currNode->getId(), nextNode->getId());
 		cout << "\nBack at the airport!\n" << endl << endl;
@@ -343,6 +352,7 @@ void UserInterface::mainMenu() {
 
 	while(op<1 || op>5)
 		cout<<"Please choose a valid option: ";
+	vector<Node* > empty;
 
 	switch (op) {
 	case 1:
@@ -359,6 +369,7 @@ void UserInterface::mainMenu() {
 		break;
 	case 3:
 		cout << "\n\n\n";
+		updateCoordinates();
 		transferMenu();
 		cout<<"\n\n\n";
 		mainMenu();
@@ -367,7 +378,8 @@ void UserInterface::mainMenu() {
 		cout<<"\n\n\n";
 		updateCoordinates();
 		cout << minLat << " " << maxLat << " " << minLng << " " << maxLng << endl;
-		displayGraph();
+
+		displayGraph(empty);
 		getchar();
 		cout<<"\n\n\n";
 		mainMenu();
@@ -379,7 +391,7 @@ void UserInterface::mainMenu() {
 	cin.get();
 }
 
-void UserInterface::displayGraph()
+void UserInterface::displayGraph(vector<Node *> path)
 {
 	GraphViewer *gv = new GraphViewer(600, 600, false);
 
@@ -387,22 +399,23 @@ void UserInterface::displayGraph()
 	gv->defineEdgeColor("blue");
 	gv->defineVertexColor("yellow");
 
-	gv->setBackground("image.png");
+	//gv->setBackground("image.png");
 
+	cout<<"1\n";
 	for(unsigned int i = 0; i < graph->vertexSet.size(); i++)
 	{
 		double lat = graph->vertexSet[i]->getCoordinates().getLatitude();
 		double lng = graph->vertexSet[i]->getCoordinates().getLongitude();
 		int x, y;
 
-		x = floor(((lng-minLng)*1920/(maxLng-minLng)));
-		y = 4200-floor(((lat-minLat)*1080/(maxLat-minLat)));
+		x = floor(((lng-minLng)*4200/(maxLng-minLng)));
+		y = 4200-floor(((lat-minLat)*4200/(maxLat-minLat)));
 
 		gv->addNode(graph->vertexSet[i]->getId(), x, y);
-		//gv->setVertexLabel(graph->vertexSet[i]->getId(), ".");
+		gv->setVertexLabel(graph->vertexSet[i]->getId(), ".");
 
 	}
-
+	cout<<"2\n";
 	int k = 1;
 	for(unsigned int i = 0; i < graph->vertexSet.size(); i++)
 	{
@@ -414,19 +427,23 @@ void UserInterface::displayGraph()
 			k++;
 		}
 	}
-
+	cout<<"3\n";
 	for(unsigned int i = 0; i < hotels.size(); i++)
 	{
 		gv->setVertexColor(hotels[i]->node->getId(), GREEN);
 		gv->setVertexLabel(hotels[i]->node->getId(), hotels[i]->name);
 	}
+	cout<<"4\n";
+	for(unsigned int i = 0; i < path.size(); i++)
+	{
+		gv->setVertexColor(path[i]->getId(), RED);
+	}
 
-
-
+	cout<<"5\n";
 	gv->rearrange();
 }
 
-void UserInterface::transferTo(unsigned long id_from, unsigned long id_dest){
+vector<Node *> UserInterface::transferTo(unsigned long id_from, unsigned long id_dest){
 	vector<Node *> path;
 
 	graph->resetIndegrees();
@@ -434,7 +451,7 @@ void UserInterface::transferTo(unsigned long id_from, unsigned long id_dest){
 
 	path = graph->getPath(id_from, id_dest);
 	if (path.size() == 0)
-		return;
+		return path;
 
 	string oldRoadName = "1";
 
@@ -455,6 +472,7 @@ void UserInterface::transferTo(unsigned long id_from, unsigned long id_dest){
 		}
 		//cout<<" Passing Node "<<path[i]->getId()<<endl;
 	}
+	return path;
 }
 
 void UserInterface::assignHotelsToVans() {
