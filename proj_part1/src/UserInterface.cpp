@@ -450,6 +450,8 @@ void UserInterface::displayGraph(vector<Node *> path)
 		gv->setVertexLabel(hotels[i]->node->getId(), hotels[i]->name);
 	}
 
+	gv->setVertexIcon(SOURCE_NODE_ID, "airport.png");
+
 	gv->rearrange();
 }
 
