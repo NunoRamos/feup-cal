@@ -429,7 +429,7 @@ void UserInterface::displayGraph(vector<Node *> path)
 		}
 	}
 
-	for(unsigned int i = 0; i < path.size()-1; i++)
+	for(int i = 0; i < (int)(path.size()-1); i++)
 	{
 		gv->setVertexColor(path[i]->getId(), RED);
 		for(unsigned int k = 0; k < path[i]->adj.size(); k++)
