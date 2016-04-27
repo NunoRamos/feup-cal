@@ -61,6 +61,9 @@ class Edge {
 	Node *dest; ///< destination of the Edge
 	Road *road; ///< Road that stores the information relative to this Edge (name, ID, etc...)
 	float weight; ///< "length" of the road, used in calculating fastest path to a Node
+private:
+	static int next_edge_id;
+	int edgeID;
 public:
 	/**
 	 *\brief Basic class constructor
@@ -82,9 +85,15 @@ public:
 	 */
 	Node* getDest() const;
 
+	/**
+	 * \brief Returns the edge ID
+	 */
+	int getEdgeID() const;
+
 	friend class Node;
 	friend class Graph;
 };
+
 
 /**
  * \brief class that refers to certain points on a map that are reachable through Edges

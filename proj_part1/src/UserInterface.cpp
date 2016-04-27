@@ -394,14 +394,15 @@ void UserInterface::mainMenu() {
 void UserInterface::displayGraph(vector<Node *> path)
 {
 	GraphViewer *gv = new GraphViewer(600, 600, false);
+	//gv->setBackground("map2.png");
 
 	gv->createWindow(1200, 1200);
 	gv->defineEdgeColor("blue");
 	gv->defineVertexColor("yellow");
 
-	//gv->setBackground("image.png");
 
-	cout<<"1\n";
+
+
 	for(unsigned int i = 0; i < graph->vertexSet.size(); i++)
 	{
 		double lat = graph->vertexSet[i]->getCoordinates().getLatitude();
@@ -409,37 +410,46 @@ void UserInterface::displayGraph(vector<Node *> path)
 		int x, y;
 
 		x = floor(((lng-minLng)*4200/(maxLng-minLng)));
-		y = 4200-floor(((lat-minLat)*4200/(maxLat-minLat)));
+		y = 3183-floor(((lat-minLat)*3183/(maxLat-minLat)));
 
 		gv->addNode(graph->vertexSet[i]->getId(), x, y);
 		gv->setVertexLabel(graph->vertexSet[i]->getId(), ".");
 
 	}
-	cout<<"2\n";
+
 	int k = 1;
 	for(unsigned int i = 0; i < graph->vertexSet.size(); i++)
 	{
 		for(unsigned int j = 0; j < graph->vertexSet[i]->adj.size(); j++)
 		{
-			gv->addEdge(k, graph->vertexSet[i]->getId(), graph->vertexSet[i]->adj[j]->getDest()->getId(), EdgeType::UNDIRECTED);
+			gv->addEdge(graph->vertexSet[i]->adj[j]->getEdgeID(), graph->vertexSet[i]->getId(), graph->vertexSet[i]->adj[j]->getDest()->getId(), EdgeType::UNDIRECTED);
 			//add road names, not advised.
 			//gv->setEdgeLabel(k, graph->vertexSet[i]->adj[j]->getRoad()->getName());
 			k++;
 		}
 	}
-	cout<<"3\n";
-	for(unsigned int i = 0; i < hotels.size(); i++)
-	{
-		gv->setVertexColor(hotels[i]->node->getId(), GREEN);
-		gv->setVertexLabel(hotels[i]->node->getId(), hotels[i]->name);
-	}
-	cout<<"4\n";
-	for(unsigned int i = 0; i < path.size(); i++)
+
+	for(unsigned int i = 0; i < path.size()-1; i++)
 	{
 		gv->setVertexColor(path[i]->getId(), RED);
+		for(unsigned int k = 0; k < path[i]->adj.size(); k++)
+		{
+			if(path[i+1]->getId() == path[i]->adj[k]->getDest()->getId())
+			{
+				gv->setEdgeColor(path[i]->adj[k]->getEdgeID(), RED);
+
+			}
+		}
 	}
 
-	cout<<"5\n";
+
+	for(unsigned int i = 0; i < hotels.size(); i++)
+	{
+		//gv->setVertexColor(hotels[i]->node->getId(), GREEN);
+		gv->setVertexIcon(hotels[i]->node->getId(), "hotel2.png");
+		gv->setVertexLabel(hotels[i]->node->getId(), hotels[i]->name);
+	}
+
 	gv->rearrange();
 }
 

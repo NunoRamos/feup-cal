@@ -143,9 +143,16 @@ public:
 	 * \brief displays the passengers that will be transfered and the path that will be taken
 	 */
 	void transferMenu();
-
+	/**
+	 * \brief finds the max and min values of latitude and longitude of the nodes.
+	 *
+	 * Places those values in the valiables maxLat, minLat, maxLng, minLng.
+	 */
 	void updateCoordinates();
 
+	/**
+	 * \brief Displays the nodes and edges of the graph. Accentuates the path given by the vector in red.
+	 */
 	void displayGraph(vector<Node *> path);
 
 	/**

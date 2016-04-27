@@ -39,6 +39,8 @@ bool Road::isTwoWay() const {
 Edge::Edge(Road *road) {
 	this->road = road;
 	this->dest = NULL;
+	this->edgeID = next_edge_id;
+	next_edge_id++;
 }
 
 Road* Edge::getRoad() const {
@@ -53,6 +55,12 @@ void Edge::setDest(Node *from, Node *to) {
 Node* Edge::getDest() const {
 	return dest;
 }
+
+int Edge::getEdgeID() const {
+	return edgeID;
+}
+
+int Edge::next_edge_id = 0;
 
 //******NODE************
 
