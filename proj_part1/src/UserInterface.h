@@ -19,7 +19,7 @@
 #define SUBRD_FILENAME "test_subroads.txt"
 
 //airport node
-#define SOURCE_NODE_ID 112640154
+#define SOURCE_NODE_ID 1105931165
 #define MAX_PASSENGERS 10
 
 class Hotel {
