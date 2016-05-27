@@ -26,9 +26,9 @@ class Road;
  *	this info is not immediately useful for going through the graph
  */
 class Road {
-	unsigned long id;
-	std::string name;
-	bool twoWay;
+	unsigned long id; ///< Unique Id of the road
+	std::string name; ///< Name of the road
+	bool twoWay; ///< True if road has two ways, false if it only has one.
 
 public:
 
@@ -61,6 +61,9 @@ class Edge {
 	Node *dest; ///< destination of the Edge
 	Road *road; ///< Road that stores the information relative to this Edge (name, ID, etc...)
 	float weight; ///< "length" of the road, used in calculating fastest path to a Node
+private:
+	static int next_edge_id; ///< static variable to know the next unique edge ID.
+	int edgeID; ///< unique id of the edge.
 public:
 	/**
 	 *\brief Basic class constructor
@@ -82,9 +85,15 @@ public:
 	 */
 	Node* getDest() const;
 
+	/**
+	 * \brief Returns the edge ID
+	 */
+	int getEdgeID() const;
+
 	friend class Node;
 	friend class Graph;
 };
+
 
 /**
  * \brief class that refers to certain points on a map that are reachable through Edges
