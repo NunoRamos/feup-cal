@@ -1,0 +1,10 @@
+112652015;Hotel Beta;
+1561603553;Hotel Star Inn;
+444004672;Residencial Paranhos;
+433073096;Axis Porto;
+3554953679;Hotel Ibis Porto;
+435759031;Hotel Eurostars Oporto;
+3345718930;Hotel Portinari;
+343634580;Hotel Antas Porto;
+343634562;AC Hotel Porto;
+112613628;Hostel Myosotis Porto;
