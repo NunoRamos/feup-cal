@@ -9,6 +9,8 @@
 #define SRC_STRINGMATCH_H_
 
 using namespace std;
+#include <vector>
+#include <string>
 
 /**
  *\brief prefix function that preprocesses the pattern used in the Knuth-Morris-Pratt algorithm
@@ -19,7 +21,7 @@ vector<int> KMPcomputePrefix(string P);
  * \brief implementation of the Knuth-Morris-Pratt algorithm that returns the number of occurrences
  * of a pattern on a text
  */
-int numStringMatching(string text, string pattern);
+int numStringMatching(string pattern, string text );
 
 /**
  * \brief function that returns the edit distance between two strings

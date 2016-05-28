@@ -41,7 +41,7 @@ Node *Hotel::getNode() const {
 	return node;
 }
 
-Van::Van(vector<Hotel*> hz) {
+Van::Van(vector<Hotel> hz) {
 	this->hotelZone = hz;
 }
 
@@ -89,7 +89,7 @@ void UserInterface::readHotels() {
 			continue;
 		}
 
-		Hotel* h = new Hotel(name, n);
+		Hotel h(name, n);
 		hotels.push_back(h);
 
 	}
@@ -98,8 +98,8 @@ void UserInterface::readHotels() {
 
 	cout << vans.size() << endl;
 	for (unsigned int i = 0; i < vans.size(); i++) {
-		cout << vans[i]->hotelZone[0]->getNode()->getId() << endl;
-		cout << vans[i]->hotelZone[1]->getNode()->getId() << endl;
+		cout << vans[i]->hotelZone[0].getNode()->getId() << endl;
+		cout << vans[i]->hotelZone[1].getNode()->getId() << endl;
 	}
 
 	cin.get();
@@ -108,7 +108,7 @@ void UserInterface::readHotels() {
 void UserInterface::printHotels() {
 	cout << endl;
 	for (unsigned int i = 0; i < hotels.size(); i++) {
-		cout << i + 1 << " - " << hotels[i]->name << endl;
+		cout << i + 1 << " - " << hotels[i].name << endl;
 	}
 }
 
@@ -161,7 +161,7 @@ void UserInterface::readReservations() {
 				<< endl;
 		Passenger* p = new Passenger(name, nif);
 
-		Reservation res(hotels[hotel - 1]->node, arrival_time, p);
+		Reservation res(hotels[hotel - 1].node, arrival_time, p);
 
 		addReservation(res);
 
@@ -257,7 +257,7 @@ void UserInterface::reservationMenu() {
 
 	Passenger* p = new Passenger(name, nif);
 
-	Reservation res(hotels[hotel - 1]->node, arrival_time, p);
+	Reservation res(hotels[hotel - 1].node, arrival_time, p);
 
 	addReservation(res);
 }
@@ -371,6 +371,8 @@ void UserInterface::mainMenu() {
 		break;
 	case 5:
 		//TODO Search for a van by the name of a street through which it will pass
+		searchVanByRoad();
+		mainMenu();
 		break;
 
 	case 6:
@@ -421,8 +423,8 @@ void UserInterface::displayGraph(vector<Node *> path)
 	cout<<"3\n";
 	for(unsigned int i = 0; i < hotels.size(); i++)
 	{
-		gv->setVertexColor(hotels[i]->node->getId(), GREEN);
-		gv->setVertexLabel(hotels[i]->node->getId(), hotels[i]->name);
+		gv->setVertexColor(hotels[i].node->getId(), GREEN);
+		gv->setVertexLabel(hotels[i].node->getId(), hotels[i].name);
 	}
 	cout<<"4\n";
 	for(unsigned int i = 0; i < path.size(); i++)
@@ -474,31 +476,31 @@ void UserInterface::assignHotelsToVans() {
 	int indexDistMinMax;
 	double dist;
 
-	vector<Hotel*> zone;
+	vector<Hotel> zone;
 
 	unsigned int i = 0;
 	while (i < NUMBER_VANS) {
 
-		if (!hotels[indexHotel]->getAssigned()) { //finds the first unassigned hotel
+		if (!hotels[indexHotel].getAssigned()) { //finds the first unassigned hotel
 			i++;
-			hotels[indexHotel]->setAssigned(true);
+			hotels[indexHotel].setAssigned(true);
 			zone.push_back(hotels[indexHotel]);
 
 			for (unsigned int j = 1; j < hotelsPerVan; j++) { //fills the vector with the closest hotels
 
 				for (unsigned int k = 0; k < hotels.size(); k++) {
-					if (k != indexHotel && !hotels[k]->getAssigned()) {
+					if (k != indexHotel && !hotels[k].getAssigned()) {
 						//zone.push_back(hotels[k]);
 						dist = getDistance(
-								hotels[indexHotel]->getNode()->getPoint(),
-								hotels[k]->getNode()->getPoint());
+								hotels[indexHotel].getNode()->getPoint(),
+								hotels[k].getNode()->getPoint());
 						if (dist < distMin) {
 							distMin = dist;
 							indexDistMinMax = k;
 						}
 					}
 				}
-				hotels[indexDistMinMax]->setAssigned(true);
+				hotels[indexDistMinMax].setAssigned(true);
 				zone.push_back(hotels[indexDistMinMax]);
 				distMin = INT_MAX;
 			}
@@ -513,10 +515,10 @@ void UserInterface::assignHotelsToVans() {
 
 	//gets the unassigned hotels (if there are any) and assigns them to the vans that serve the closest hotels
 
-	vector<Hotel *> unassignedHotels;
+	vector<Hotel > unassignedHotels;
 
 	for (unsigned int m = 0; m < hotels.size(); m++) {
-		if (!hotels[m]->getAssigned())
+		if (!hotels[m].getAssigned())
 			unassignedHotels.push_back(hotels[m]);
 	}
 
@@ -526,8 +528,8 @@ void UserInterface::assignHotelsToVans() {
 		distMin = INT_MAX;
 
 		for (unsigned int n = 0; n < vans.size(); i++) {
-			dist = getDistance(vans[n]->hotelZone[0]->getNode()->getPoint(),
-					unassignedHotels[m]->getNode()->getPoint());
+			dist = getDistance(vans[n]->hotelZone[0].getNode()->getPoint(),
+					unassignedHotels[m].getNode()->getPoint());
 
 			if (dist < distMin) {
 				distMin = dist;
@@ -540,7 +542,7 @@ void UserInterface::assignHotelsToVans() {
 	}
 
 	for (unsigned int m = 0; m < hotels.size(); m++) {
-		if (!hotels[m]->getAssigned())
+		if (!hotels[m].getAssigned())
 			unassignedHotels.push_back(hotels[m]);
 	}
 
@@ -548,7 +550,7 @@ void UserInterface::assignHotelsToVans() {
 
 	for (unsigned int i = 0; i < vans.size(); i++) {
 		for (unsigned int j = 0; j < vans[i]->hotelZone.size(); j++) {
-			cout << "Hotel " << vans[i]->hotelZone[j]->getNode()->getId()
+			cout << "Hotel " << vans[i]->hotelZone[j].getNode()->getId()
 							<< " assigned to van " << i << endl;
 		}
 	}
@@ -566,7 +568,7 @@ void UserInterface::assignClientsToVans() {
 	while (!reservations.empty()) {
 		for (unsigned int i = 0; i < vans.size(); i++) {
 			for (unsigned int j = 0; j < vans[i]->hotelZone.size(); j++) {
-				if (vans[i]->hotelZone[j]->getNode()->getId()
+				if (vans[i]->hotelZone[j].getNode()->getId()
 						== reservations.top().getDestination()->getId()) {
 					if (vans[i]->passengers.size() < MAX_PASSENGERS) {
 						cout << "Passenger "
@@ -613,4 +615,61 @@ void UserInterface::updateCoordinates()
 //////////////////////////////////////
 //PART 2
 /////////////////////////////////////
+
+vector<Hotel> Van::getHotels() const{
+	return hotelZone;
+}
+
+void UserInterface::searchVanByRoad(){
+
+	string name;
+	char tmp[256];
+
+	cout << "Road name: ";
+	cin.getline(tmp,256,'\n');
+
+	string vanPath;
+	stringstream ss;
+	bool found = false;
+	vector<Node *> hotelNodes;
+
+	//get the name of the roads of the hotels served by a van in a string and search by exact string matching
+	for(unsigned int i = 0; i < vans.size(); i++){
+
+		for(unsigned int j = 0; j < vans[i]->getHotels().size(); j++){
+			hotelNodes.push_back(vans[i]->getHotels()[j].getNode());
+		}
+
+		string roadName;
+
+		//get the road the van will go through
+		for(unsigned int j = 0; j < hotelNodes.size(); j++){										//for every hotel the van serves
+			//FIXME check if path is null?
+			for(unsigned int m = 0; m < hotelNodes[i]->path->adj.size(); m++){ 						//get the road through which the an gets to that hotel
+				if(hotelNodes[j]->getId() == hotelNodes[j]->path->adj[m]->getDest()->getId()){		//and add it to the string
+					roadName = hotelNodes[j]->path->adj[m]->getRoad()->getName();
+				}
+			}
+
+			ss << roadName << endl;
+			roadName.clear();
+		}
+
+		ss >> vanPath;
+		cout << vanPath;
+
+		if(numStringMatching(name,vanPath) != 0){
+			cout << "Van " << i << " goes to road " << name << endl;
+			found = true;
+		}
+
+	}
+
+	if(found)
+		return;
+
+	//No exact match found, go to approximate string matching
+
+
+}
 

@@ -63,16 +63,22 @@ public:
 };
 
 class Van {
-	vector<Hotel*> hotelZone;
+	vector<Hotel> hotelZone;
 	vector<Reservation> passengers;
+
 public:
 	/**
 	 * \brief basic class constructor
 	 *
 	 * \arg hz vector of hotels to which this van will transfer clients
 	 */
-	Van(vector<Hotel*> hz);
+	Van(vector<Hotel> hz);
 
+	//PART 2
+	/**
+	 * \brief returns the hotels served by the
+	 */
+	vector<Hotel> getHotels() const;
 	friend class UserInterface;
 };
 
@@ -81,7 +87,7 @@ class UserInterface {
 	priority_queue<Reservation> reservations;
 	vector<Node> destinations;
 	int maxPassengers;
-	vector<Hotel*> hotels;
+	vector<Hotel> hotels;
 	Node *source;
 	vector<Van*> vans;
 

@@ -7,6 +7,7 @@
 
 #include "stringMatch.h"
 
+
 using namespace std;
 
 
@@ -107,5 +108,5 @@ int editDistance(string  pattern, string text){
 
 	return distance[pattern.size()][ text.size()];
 }
-S
+
 
