@@ -326,14 +326,16 @@ void UserInterface::mainMenu() {
 	cout<<"2 - Show Reservations\n";
 	cout<<"3 - Plan Trip\n";
 	cout<<"4 - Show Map\n";
-	cout<<"5 - Exit\n";
+	cout<<"5 - Search Van by itinerary\n";
+	cout<<"6 - Search Van by client name\n";
+	cout<<"7 - Exit\n";
 	cout<<"\nYour option: ";
 
 	int op;
 	cin >> op;
 	cin.ignore(1000, '\n');
 
-	while(op<1 || op>5)
+	while(op<1 || op>7)
 		cout<<"Please choose a valid option: ";
 	vector<Node* > empty;
 
@@ -368,6 +370,12 @@ void UserInterface::mainMenu() {
 		mainMenu();
 		break;
 	case 5:
+		//TODO Search for a van by the name of a street through which it will pass
+		break;
+
+	case 6:
+		//TODO Search a van by the name of the clients assigned to it
+	case 7:
 		cout<<"\nGoodBye!\n";
 		exit(0);
 	}
