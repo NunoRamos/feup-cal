@@ -91,14 +91,17 @@ vector<Node *> readNodes(const char* filename) {
 /**
  * vector that reads the Roads from a file and stores them in a vector
  */
-vector<Road *> readRoads(const char* filename, vector<unsigned long> &ids) {
+vector<Road *> readRoads(const char* filename, vector<unsigned long> &ids, const char* dictionary) {
 
 	vector<Road *> vec;
 	ifstream file;
 
-	file.open(filename);
+	ofstream road_dictionary; //part 2
 
-	if (!file.is_open())
+	file.open(filename);
+	road_dictionary.open(dictionary);
+
+	if (!file.is_open() || !road_dictionary.is_open())
 		return vec;
 
 	while (!file.eof()) {
@@ -119,6 +122,9 @@ vector<Road *> readRoads(const char* filename, vector<unsigned long> &ids) {
 
 		getline(file, name, ';');
 
+		if(name.size() != 0) //not an empty string
+			road_dictionary << name << endl;
+
 		if (getline(file, buff)) {
 
 			if (buff.c_str()[0] == 'F')
@@ -134,6 +140,7 @@ vector<Road *> readRoads(const char* filename, vector<unsigned long> &ids) {
 	}
 
 	file.close();
+	road_dictionary.close();
 
 	return vec;
 }
@@ -236,7 +243,7 @@ int main(void) {
 	vector<unsigned long> roadIds;
 
 	nodeVec = readNodes(NODES_FILENAME);
-	roadVec = readRoads(ROADS_FILENAME, roadIds);
+	roadVec = readRoads(ROADS_FILENAME, roadIds, ROAD_DICTIONARY);
 
 	readEdges(SUBRD_FILENAME, nodeVec, roadVec, roadIds);
 
@@ -247,6 +254,14 @@ int main(void) {
 		cout << "Source node not found!\n";
 		exit(30);
 	}
+
+
+	///////////////////////////////
+	//PART 2
+	///////////////////////////////
+
+
+
 	UserInterface *cli = new UserInterface(graph, MAX_PASSENGERS, source);
 
 	cli->readHotels();

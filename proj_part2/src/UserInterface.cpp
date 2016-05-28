@@ -114,7 +114,13 @@ void UserInterface::printHotels() {
 
 void UserInterface::readReservations() {
 	ifstream file;
+	ofstream name_dictionary;
+
 	file.open(RESERVATIONS_FILENAME);
+	name_dictionary.open(NAMES_DICTIONARY);
+
+	if(!name_dictionary.is_open())
+		cout<<"Failed opening name dictionary!\n";
 
 	if (!file.is_open())
 		return;
@@ -131,6 +137,7 @@ void UserInterface::readReservations() {
 		string arrival_time;
 
 		getline(file, name, ';');
+		name_dictionary << name << endl;
 
 		if (getline(file, buff, ';')) {
 			ss << buff;
@@ -159,6 +166,9 @@ void UserInterface::readReservations() {
 		addReservation(res);
 
 	}
+
+	file.close();
+	name_dictionary.close();
 }
 
 void UserInterface::printReservations() {
@@ -214,11 +224,18 @@ void UserInterface::reservationMenu() {
 	int nif;
 	unsigned int hotel;
 	string arrival_time;
+	ofstream name_dictionary;
+
+	name_dictionary.open(NAMES_DICTIONARY);
+	if(!name_dictionary.is_open())
+		cout<< "Error opening name dictionary, client will not be added!\n";
 
 	cout << "Reservation Menu\n";
 
 	cout << "Insert name: ";
 	getline(cin, name);
+	name_dictionary << name << endl;
+	name_dictionary.close();
 
 	cout << "Insert NIF: ";
 	cin >> nif;
