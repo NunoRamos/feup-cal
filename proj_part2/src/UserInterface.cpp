@@ -226,7 +226,7 @@ void UserInterface::reservationMenu() {
 	string arrival_time;
 	ofstream name_dictionary;
 
-	name_dictionary.open(NAMES_DICTIONARY);
+	name_dictionary.open(NAMES_DICTIONARY,ofstream::app);
 	if(!name_dictionary.is_open())
 		cout<< "Error opening name dictionary, client will not be added!\n";
 
@@ -296,7 +296,7 @@ void UserInterface::transferMenu() {
 
 			for (unsigned int j = 0; j < vans[i]->passengers.size(); j++) {
 				if (vans[i]->passengers[j].getClient()->getName()
-						== nextPassenger.getClient()->getName()) {
+						== nextPassenger.getClient()->getName()) { //remove the passenger from the van
 					vans[i]->passengers.erase(vans[i]->passengers.begin() + j);
 					break;
 				}
@@ -314,40 +314,6 @@ void UserInterface::transferMenu() {
 		cout << "\nBack at the airport!\n" << endl << endl;
 
 	}
-
-	//puts the 10 first arrivals in the transfer
-	/**cout << "Passengers to be transferred:\n";
-	 while(!reservations.empty() && i < MAX_PASSENGERS){
-	 reserv_vec.push_back(reservations.top().getDestination());
-	 cout << reservations.top().getClient()->getName()<<endl;
-	 reservations.pop();
-	 i++;
-	 }
-
-
-	 while(!reserv_vec.empty()){
-	 nextNode = currNode->getClosestNode(reserv_vec);
-	 cout<<"next: "<<nextNode->getId()<<endl<<reserv_vec.size()<<endl;cin.get();
-	 if(nextNode != currNode){
-	 transferTo(currNode->getId(),nextNode->getId());
-	 cout << "Client transfered!\n";
-	 }
-
-	 else{
-	 cout << "Client transfered!\n";
-	 }
-
-	 currNode = nextNode;
-
-
-	 for(i = 0; i < reserv_vec.size(); i++){
-	 if(reserv_vec[i]->getId() == currNode->getId()){
-	 reserv_vec.erase(reserv_vec.begin() + i);
-	 break;
-	 }
-	 }
-	 }
-	 */
 
 	return;
 }
