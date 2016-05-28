@@ -162,11 +162,30 @@ public:
 	void assignHotelsToVans();
 
 	/**
-	 * \briefs sets a vector of reservations to be satisfied by each van
+	 * \brief sets a vector of reservations to be satisfied by each van
 	 *
 	 * each van has a number < MAX_PASSENGERS of clients to transfer to an hotel that belongs to their zone vector
 	 */
 	void assignClientsToVans();
+
+
+	/////////////////////////////////////////////////////////
+	//PART2
+	/////////////////////////////////////////////////////////
+
+	/**
+	 * \brief prompts the user for the name of a road and searches the vans (using exact and, if it fails, approximate string matching
+	 * to get a list of Vans that pass that road
+	 */
+	void searchVanByRoad();
+
+	/**
+	 * \brief prompts the user for the name of a client and searches the vans (using exact and, if it fails, approximate string matching
+	 * to get a list of Vans that transport clients with that name.
+	 */
+	void searchVanByClient();
+
+
 };
 
 #endif /* SRC_USERINTERFACE_H_ */
