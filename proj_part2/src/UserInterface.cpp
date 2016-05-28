@@ -9,7 +9,7 @@
 #include "Reservation.h"
 #include "Passenger.h"
 #include <cstdlib>
-
+#include "stringMatch.h"
 #include <fstream>
 #include <istream>
 #include <string>
@@ -628,10 +628,15 @@ void UserInterface::searchVanByRoad(){
 	cout << "Road name: ";
 	cin.getline(tmp,256,'\n');
 
-	string vanPath;
-	stringstream ss;
 	bool found = false;
 	vector<Node *> hotelNodes;
+	int min = INT_MAX;
+
+	vector<int> closestMatchVans;
+	vector<string> closestMatches;
+
+	vector<int> exactMatchVans;
+	vector<string> exactMatches;
 
 	//get the name of the roads of the hotels served by a van in a string and search by exact string matching
 	for(unsigned int i = 0; i < vans.size(); i++){
@@ -644,31 +649,50 @@ void UserInterface::searchVanByRoad(){
 
 		//get the road the van will go through
 		for(unsigned int j = 0; j < hotelNodes.size(); j++){										//for every hotel the van serves
-			//FIXME check if path is null?
+																									//TODO wait for separation of trip and planning
 			for(unsigned int m = 0; m < hotelNodes[i]->path->adj.size(); m++){ 						//get the road through which the an gets to that hotel
 				if(hotelNodes[j]->getId() == hotelNodes[j]->path->adj[m]->getDest()->getId()){		//and add it to the string
 					roadName = hotelNodes[j]->path->adj[m]->getRoad()->getName();
+
+					if(numStringMatching(name,roadName) != 0){
+							cout << "Van " << i << " goes to the hotel on road " << roadName << endl;//FIXME debug only, remove
+							exactMatchVans.push_back(i);
+							exactMatches.push_back(roadName);
+							found = true;
+					}
+
+					if(!found){																		//No exact matches found yet
+						int x = editDistance(name,roadName);										//check the edit distance of the current road name
+						if(x < min){
+							min = x;
+							closestMatches.clear();
+							closestMatchVans.clear();
+							closestMatches.push_back(roadName);
+							closestMatchVans.push_back(i);
+						}
+
+						else if(x == min){
+							closestMatches.push_back(roadName);
+							closestMatchVans.push_back(i);
+						}
+					}
 				}
 			}
-
-			ss << roadName << endl;
-			roadName.clear();
 		}
 
-		ss >> vanPath;
-		cout << vanPath;
-
-		if(numStringMatching(name,vanPath) != 0){
-			cout << "Van " << i << " goes to road " << name << endl;
-			found = true;
+	if(found){
+		cout<<"Matches found:\n";
+		for(int i = 0; i < exactMatches.size(); i++){
+			cout << "Van " << exactMatchVans[i] << " - " << exactMatches[i]<<endl;
 		}
-
 	}
 
-	if(found)
-		return;
-
-	//No exact match found, go to approximate string matching
+	else{
+		cout<<"No matches found, closest matching strings:\n";
+		for(int i = 0; i < exactMatches.size(); i++){
+			cout << "Van " << closestMatchVans[i] << " - " << closestMatches[i]<<endl;
+		}
+	}
 
 
 }
