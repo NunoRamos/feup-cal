@@ -49,6 +49,7 @@ UserInterface::UserInterface(Graph *g, int maxPassengers, Node *source) {
 	this->graph = g;
 	this->maxPassengers = maxPassengers;
 	this->source = source;
+	this->isPlanned = false;
 
 	maxLat = g->vertexSet[0]->getCoordinates().getLatitude();
 	minLat = g->vertexSet[0]->getCoordinates().getLatitude();
@@ -266,54 +267,56 @@ void UserInterface::transferMenu() {
 
 	int i = 0;
 
-	//distributing the passengers through  the available vans
-	assignClientsToVans();
+	if(this->isPlanned){
 
-	for (unsigned int i = 0; i < vans.size(); i++) {
+		for (unsigned int i = 0; i < vans.size(); i++) {
 
-		vector<Node * > total_path;
+			vector<Node * > total_path;
 
-		Node *currNode = source;
-		Node *nextNode;
+			Node *currNode = source;
+			Node *nextNode;
 
-		if (vans[i]->passengers.empty())
-			continue;
+			if (vans[i]->passengers.empty())
+				continue;
 
-		while (!vans[i]->passengers.empty()) {
-			vector<Node * > semi_path;
-			Reservation nextPassenger = currNode->getClosestDestination(
-					vans[i]->passengers);
-			nextNode = nextPassenger.getDestination();
+			while (!vans[i]->passengers.empty()) {
+				vector<Node * > semi_path;
+				Reservation nextPassenger = currNode->getClosestDestination(
+						vans[i]->passengers);
+				nextNode = nextPassenger.getDestination();
 
-			if (nextNode != currNode){
-				semi_path = transferTo(currNode->getId(), nextNode->getId());
-				total_path.insert(total_path.end(), semi_path.begin(), semi_path.end());
-				semi_path.clear();
-			}
-
-			cout << "Van " << i << " transfered client "
-					<< nextPassenger.getClient()->getName() << endl;
-
-			for (unsigned int j = 0; j < vans[i]->passengers.size(); j++) {
-				if (vans[i]->passengers[j].getClient()->getName()
-						== nextPassenger.getClient()->getName()) { //remove the passenger from the van
-					vans[i]->passengers.erase(vans[i]->passengers.begin() + j);
-					break;
+				if (nextNode != currNode){
+					semi_path = transferTo(currNode->getId(), nextNode->getId());
+					total_path.insert(total_path.end(), semi_path.begin(), semi_path.end());
+					semi_path.clear();
 				}
+
+				cout << "Van " << i << " transfered client "
+						<< nextPassenger.getClient()->getName() << endl;
+
+				for (unsigned int j = 0; j < vans[i]->passengers.size(); j++) {
+					if (vans[i]->passengers[j].getClient()->getName()
+							== nextPassenger.getClient()->getName()) { //remove the passenger from the van
+						vans[i]->passengers.erase(vans[i]->passengers.begin() + j);
+						break;
+					}
+				}
+
+				currNode = nextNode;
+
 			}
 
-			currNode = nextNode;
+			displayGraph(total_path);
+			cin.get();
+			total_path.clear();
+			nextNode = source;
+			transferTo(currNode->getId(), nextNode->getId());
+			cout << "\nBack at the airport!\n" << endl << endl;
 
 		}
-
-		displayGraph(total_path);
-		cin.get();
-		total_path.clear();
-		nextNode = source;
-		transferTo(currNode->getId(), nextNode->getId());
-		cout << "\nBack at the airport!\n" << endl << endl;
-
+		this->isPlanned = false;
 	}
+	else cout<<"Error! First plan the trip then do the trip!!!\n";
 
 	return;
 }
@@ -325,10 +328,11 @@ void UserInterface::mainMenu() {
 	cout<<"1 - Add Reservation\n";
 	cout<<"2 - Show Reservations\n";
 	cout<<"3 - Plan Trip\n";
-	cout<<"4 - Show Map\n";
-	cout<<"5 - Search Van by itinerary\n";
-	cout<<"6 - Search Van by client name\n";
-	cout<<"7 - Exit\n";
+	cout<<"4 - Do Trip\n";
+	cout<<"5 - Show Map\n";
+	cout<<"6 - Search Van by itinerary\n";
+	cout<<"7 - Search Van by client name\n";
+	cout<<"8 - Exit\n";
 	cout<<"\nYour option: ";
 
 	int op;
@@ -354,12 +358,18 @@ void UserInterface::mainMenu() {
 		break;
 	case 3:
 		cout << "\n\n\n";
+		assignClientsToVans();
+		cout<<"\n\n\n";
+		mainMenu();
+		break;
+	case 4:
+		cout << "\n\n\n";
 		updateCoordinates();
 		transferMenu();
 		cout<<"\n\n\n";
 		mainMenu();
 		break;
-	case 4:
+	case 5:
 		cout<<"\n\n\n";
 		updateCoordinates();
 		cout << minLat << " " << maxLat << " " << minLng << " " << maxLng << endl;
@@ -369,13 +379,13 @@ void UserInterface::mainMenu() {
 		cout<<"\n\n\n";
 		mainMenu();
 		break;
-	case 5:
+	case 6:
 		//TODO Search for a van by the name of a street through which it will pass
 		break;
 
-	case 6:
-		//TODO Search a van by the name of the clients assigned to it
 	case 7:
+		//TODO Search a van by the name of the clients assigned to it
+	case 8:
 		cout<<"\nGoodBye!\n";
 		exit(0);
 	}
@@ -549,7 +559,7 @@ void UserInterface::assignHotelsToVans() {
 	for (unsigned int i = 0; i < vans.size(); i++) {
 		for (unsigned int j = 0; j < vans[i]->hotelZone.size(); j++) {
 			cout << "Hotel " << vans[i]->hotelZone[j]->getNode()->getId()
-							<< " assigned to van " << i << endl;
+											<< " assigned to van " << i << endl;
 		}
 	}
 }
@@ -589,6 +599,8 @@ void UserInterface::assignClientsToVans() {
 		reservations.push(temp.top());
 		temp.pop();
 	}
+
+	this->isPlanned = true;
 }
 
 void UserInterface::updateCoordinates()

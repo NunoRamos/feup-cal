@@ -8,6 +8,10 @@
 #ifndef SRC_STRINGMATCH_H_
 #define SRC_STRINGMATCH_H_
 
+#include <vector>
+#include <string>
+#include <cstdlib>
+
 using namespace std;
 
 /**

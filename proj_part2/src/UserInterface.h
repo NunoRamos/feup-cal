@@ -84,6 +84,7 @@ class UserInterface {
 	vector<Hotel*> hotels;
 	Node *source;
 	vector<Van*> vans;
+	bool isPlanned;
 
 	double maxLat, minLat, maxLng, minLng;
 
