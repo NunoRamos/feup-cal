@@ -25,11 +25,11 @@ vector<int> KMPcomputePrefix(string P) {
 	int m, k, q;
 
 	m = P.size();
-	k = 0;
-	pi[0] = 0;
+	k = -1;
+	pi[0] = -1;
 
 	for (q = 2; q < m; q++) {						//iterate the whole string
-		while (k > 0 && P[k + 1] != P[q])
+		while (k > -1 && P[k + 1] != P[q])
 			k = pi[k];					//gets the length of the current prefix
 		if (P[k + 1] == P[q])		//if it finds a bigger prefix, update
 			k++;
@@ -50,12 +50,12 @@ int numStringMatching(string pattern,string text) {
 
 	n = text.size();
 	m = pattern.size();
-	q = 0;
+	q = -1;
 
 
 	for (int i = 1; i < n; i++) {
 
-		while (q > 0 && pattern[q+1] != text[i]){
+		while (q > -1 && pattern[q+1] != text[i]){
 			q = pi[q];
 		}
 
@@ -68,6 +68,7 @@ int numStringMatching(string pattern,string text) {
 			ret++;
 		}
 
+		cout<<pattern[q];
 
 	}
 
