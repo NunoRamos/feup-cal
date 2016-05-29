@@ -7,6 +7,7 @@
 
 #include "stringMatch.h"
 
+
 using namespace std;
 
 
@@ -19,6 +20,7 @@ inline int min(int a, int b, int c){
 }
 
 vector<int> KMPcomputePrefix(string P) {
+
 	vector<int> pi(P.size());
 	int m, k, q;
 
@@ -26,12 +28,10 @@ vector<int> KMPcomputePrefix(string P) {
 	k = 0;
 	pi[0] = 0;
 
-	const char* Pstr = P.c_str();
-
 	for (q = 2; q < m; q++) {						//iterate the whole string
-		while (k > 0 && Pstr[k + 1] != Pstr[q])
+		while (k > 0 && P[k + 1] != P[q])
 			k = pi[k];					//gets the length of the current prefix
-		if (Pstr[k + 1] == Pstr[q])		//if it finds a bigger prefix, update
+		if (P[k + 1] == P[q])		//if it finds a bigger prefix, update
 			k++;
 		pi[q] = k;
 	}
