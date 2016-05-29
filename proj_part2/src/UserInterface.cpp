@@ -557,7 +557,7 @@ void UserInterface::assignHotelsToVans() {
 
 	for (unsigned int i = 0; i < vans.size(); i++) {
 		for (unsigned int j = 0; j < vans[i]->hotelZone.size(); j++) {
-			cout << "Hotel " << vans[i]->hotelZone[j].getNode()->getId()
+			cout << "Hotel " << vans[i]->hotelZone[j].getName()
 					<< " assigned to van " << i << endl;
 		}
 	}
@@ -649,11 +649,11 @@ void UserInterface::searchVanByRoad() {
 
 	//get the name of the roads of the hotels served by a van in a string and search by exact string matching
 	for (unsigned int i = 0; i < vans.size(); i++) {
-		min = INT_MAX;
-		closestMatchVans.clear();
+		/*closestMatchVans.clear();
 		closestMatches.clear();
 		exactMatchVans.clear();
-		exactMatches.clear();
+		exactMatches.clear();*/
+		hotelNodes.clear();
 
 		for (unsigned int j = 0; j < vans[i]->getHotels().size(); j++) {
 			hotelNodes.push_back(vans[i]->getHotels()[j].getNode());
@@ -664,63 +664,56 @@ void UserInterface::searchVanByRoad() {
 		//get the road the van will go through
 		for (unsigned int j = 0; j < hotelNodes.size(); j++) {						//for every hotel the van serves
 
-			for (unsigned int m = 0; m < hotelNodes[j]->path->adj.size(); m++) { 	//get the road through which the an gets to that hotel
+			for (unsigned int m = 0; m < hotelNodes[j]->path->adj.size(); m++) { 	//get the road through which the van gets to that hotel
 
-				if (hotelNodes[j]->getId()== hotelNodes[j]->path->adj[m]->getDest()->getId()) {
+				if (hotelNodes[j]->getId() == hotelNodes[j]->path->adj[m]->getDest()->getId()) {
 
-																					//and add it to the string
+					cout << "Node: "<<hotelNodes[j]->getId()<<" Edge : " << hotelNodes[j]->path->adj[m]->getRoad()->getID() << endl;
 					roadName = hotelNodes[j]->path->adj[m]->getRoad()->getName();
+
 					if (numStringMatching(name, roadName) != 0) {
 						cout << "Van " << i << " goes to the hotel on road "
-								<< roadName << endl; //FIXME debug only, remove
+								<< roadName << " - Hotel: "<<vans[i]->getHotels()[j].getName()<<endl; //FIXME debug only, remove
 						exactMatchVans.push_back(i);
 						exactMatches.push_back(roadName);
 						found = true;
 					}
 
-
 					if (!found) {													//No exact matches found yet
 						int x = editDistance(name, roadName);						//check the edit distance of the current road name
-
-						if (x < min) {cout<<roadName<<endl;
+						if (x < min) {cout<<roadName<<endl << "Edit dist: "<<x<<endl;
 							min = x;
-							if(!closestMatches.empty())
-								closestMatches.clear();
-
-							if(!closestMatchVans.empty())
-								closestMatchVans.clear();
-
+							closestMatches.clear();
+							closestMatchVans.clear();
 							closestMatches.push_back(roadName);
 							closestMatchVans.push_back(i);
 						}
-
 						else if (x == min) {
 							closestMatches.push_back(roadName);
 							closestMatchVans.push_back(i);
 						}
-
-
 					}
+
+					cout<<"j = "<<j<<" m = "<<m<<endl;
+					break;
 				}
 			}
 		}
+	}
 
-
-		if (found) {
-			cout << "Matches found:\n";
-			for (int m = 0; m < exactMatches.size(); m++) {
-				cout << "Van " << exactMatchVans[m] << " - " << exactMatches[m]
-						<< endl;
-			}
+	if (found) {
+		cout << "Matches found:\n";
+		for (int m = 0; m < exactMatches.size(); m++) {
+			cout << "Van " << exactMatchVans[m] << " - " << exactMatches[m]
+					<< endl;
 		}
+	}
 
-		else {
-			cout << "No matches found, closest matching strings:\n";
-			for (int m = 0; m < closestMatches.size(); m++) {
-				cout << "Van " << closestMatchVans[m] << " - "
-						<< closestMatches[m] << endl;
-			}
+	else {
+		cout << "No matches found, closest matching strings:\n";
+		for (int m = 0; m < closestMatches.size(); m++) {
+			cout << "Van " << closestMatchVans[m] << " - "
+					<< closestMatches[m] << endl;
 		}
-
 	}
 }
