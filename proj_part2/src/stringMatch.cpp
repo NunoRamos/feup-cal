@@ -21,14 +21,14 @@ inline int min(int a, int b, int c){
 
 vector<int> KMPcomputePrefix(string P) {
 
-	vector<int> pi(P.size());
+	vector<int> pi(P.length());
 	int m, k, q;
 
 	m = P.size();
 	k = -1;
 	pi[0] = -1;
 
-	for (q = 2; q < m; q++) {						//iterate the whole string
+	for (q = 1; q < m; q++) {						//iterate the whole string
 		while (k > -1 && P[k + 1] != P[q])
 			k = pi[k];					//gets the length of the current prefix
 		if (P[k + 1] == P[q])		//if it finds a bigger prefix, update
@@ -42,18 +42,17 @@ vector<int> KMPcomputePrefix(string P) {
 
 int numStringMatching(string pattern,string text) {
 
-	vector<int> pi(pattern.size());
+	vector<int> pi(pattern.length());
 	pi = KMPcomputePrefix(pattern);
 
 
 	int n, m, q, ret = 0;
 
-	n = text.size();
-	m = pattern.size();
+	n = text.length();
+	m = pattern.length();
 	q = -1;
 
-
-	for (int i = 1; i < n; i++) {
+	for (int i = 0; i < n; i++) {
 
 		while (q > -1 && pattern[q+1] != text[i]){
 			q = pi[q];

@@ -18,11 +18,6 @@
 #define ROADS_FILENAME "test_roads.txt"
 #define SUBRD_FILENAME "test_subroads.txt"
 
-//////////////////////////
-/////PART 2 files
-#define NAMES_DICTIONARY "names_dictionary.txt"
-#define ROAD_DICTIONARY "roads_dictionary.txt"
-
 //airport node
 #define SOURCE_NODE_ID 112640154
 #define MAX_PASSENGERS 10

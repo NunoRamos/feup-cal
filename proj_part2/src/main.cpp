@@ -91,17 +91,12 @@ vector<Node *> readNodes(const char* filename) {
 /**
  * vector that reads the Roads from a file and stores them in a vector
  */
-vector<Road *> readRoads(const char* filename, vector<unsigned long> &ids, const char* dictionary) {
+vector<Road *> readRoads(const char* filename, vector<unsigned long> &ids) {
 
 	vector<Road *> vec;
 	ifstream file;
 
-	ofstream road_dictionary; //part 2
-
-	file.open(filename);
-	road_dictionary.open(dictionary);
-
-	if (!file.is_open() || !road_dictionary.is_open())
+	if (!file.is_open())
 		return vec;
 
 	while (!file.eof()) {
@@ -122,9 +117,6 @@ vector<Road *> readRoads(const char* filename, vector<unsigned long> &ids, const
 
 		getline(file, name, ';');
 
-		if(name.size() != 0) //not an empty string
-			road_dictionary << name << endl;
-
 		if (getline(file, buff)) {
 
 			if (buff.c_str()[0] == 'F')
@@ -140,7 +132,6 @@ vector<Road *> readRoads(const char* filename, vector<unsigned long> &ids, const
 	}
 
 	file.close();
-	road_dictionary.close();
 
 	return vec;
 }
@@ -243,7 +234,7 @@ int main(void) {
 	vector<unsigned long> roadIds;
 
 	nodeVec = readNodes(NODES_FILENAME);
-	roadVec = readRoads(ROADS_FILENAME, roadIds, ROAD_DICTIONARY);
+	roadVec = readRoads(ROADS_FILENAME, roadIds);
 
 	readEdges(SUBRD_FILENAME, nodeVec, roadVec, roadIds);
 
