@@ -19,6 +19,11 @@
 #define RESERVATIONS_FILENAME "reservations.txt"
 #define NUMBER_VANS 2
 
+inline void hold(){
+	cout<<"\nPress Enter to continue...";
+	cin.get();
+}
+
 Hotel::Hotel(string name, Node *n) {
 	this->name = name;
 	this->node = n;
@@ -158,7 +163,7 @@ void UserInterface::readReservations() {
 void UserInterface::printReservations() {
 	priority_queue<Reservation> temp;
 
-	cout << "Reservations: " << endl << endl;
+	cout << "Unassigned reservations: " << endl << endl;
 	while (!reservations.empty()) {
 		cout << "Name: ";
 		cout << reservations.top().getClient()->getName() << endl;
@@ -174,6 +179,18 @@ void UserInterface::printReservations() {
 	while (!temp.empty()) {
 		reservations.push(temp.top());
 		temp.pop();
+	}
+
+	cout<<"\nPassengers assigned to vans:"<<endl<<endl;
+
+	for(unsigned int i = 0; i < vans.size(); i++){
+			cout<<"\n\nVan "<<i<<endl<<endl;
+		for(unsigned int j = 0; j<vans[i]->passengers.size(); j++){
+			cout << "Name: ";
+			cout << vans[i]->passengers[j].getClient()->getName() << endl;
+			cout << "Destination: ";
+			cout << vans[i]->passengers[j].getDestination()->getId() << endl<<endl;
+		}
 	}
 
 	cout << "Press Enter to Continue...";
@@ -302,7 +319,7 @@ void UserInterface::transferMenu() {
 
 void UserInterface::mainMenu() {
 
-	cout << "\n\n\n------------------------------------"
+	cout << "\n\n\n------------------------------------\n";
 	cout << "Welcome!\n";
 	cout << "Please choose an option: \n";
 	cout << "1 - Add Reservation\n";
@@ -329,18 +346,22 @@ void UserInterface::mainMenu() {
 	switch (op) {
 	case 1:
 		reservationMenu();
+		hold();
 		mainMenu();
 		break;
 	case 2:
 		printReservations();
+		hold();
 		mainMenu();
 		break;
 	case 3:
 		assignClientsToVans();
+		hold();
 		mainMenu();
 		break;
 	case 4:
 		updateCoordinates();
+		hold();
 		transferMenu();
 		mainMenu();
 		break;
@@ -352,11 +373,13 @@ void UserInterface::mainMenu() {
 		break;
 	case 6:
 		searchVanByRoad();
+		hold();
 		mainMenu();
 		break;
 
 	case 7:
 		searchVanByClient();
+		hold();
 		mainMenu();
 		break;
 
@@ -724,7 +747,7 @@ void UserInterface::searchVanByClient(){
 	}
 
 	else {
-		cout << "No matches found, closest matching strings:\n";
+		cout << "No matches found in the vans, closest matching strings: - Edit distance : " << min <<endl;
 		for (unsigned int m = 0; m < closestMatches.size(); m++) {
 			cout << "Van " << closestMatchVans[m] << " - "<< closestMatches[m] << endl;
 		}

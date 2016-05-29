@@ -29,9 +29,9 @@ vector<int> KMPcomputePrefix(string P) {
 	pi[0] = -1;
 
 	for (q = 1; q < m; q++) {						//iterate the whole string
-		while (k > -1 && P[k + 1] != P[q])
+		while (k > -1 && tolower(P[k + 1]) != tolower(P[q]))
 			k = pi[k];					//gets the length of the current prefix
-		if (P[k + 1] == P[q])		//if it finds a bigger prefix, update
+		if (tolower(P[k + 1]) == tolower(P[q]))		//if it finds a bigger prefix, update
 			k++;
 		pi[q] = k;
 	}
@@ -53,12 +53,11 @@ int numStringMatching(string pattern,string text) {
 	q = -1;
 
 	for (int i = 0; i < n; i++) {
-
-		while (q > -1 && pattern[q+1] != text[i]){
+		while (q > -1 && tolower(pattern[q+1])  != tolower(text[i])){
 			q = pi[q];
 		}
 
-		if (pattern[q+1] == text[i]){
+		if (tolower(pattern[q+1]) == tolower(text[i])){
 			q++;
 		}
 
@@ -95,7 +94,7 @@ int editDistance(string  pattern, string text){
 
 	for(unsigned int i = 1; i <= m; i++){
 		for(unsigned int j = 1; j <= n; j++){
-			if(pattern[i-1] == text[j-1])
+			if(tolower(pattern[i-1]) == tolower(text[j-1]))
 				distance[i][j] = distance[i-1][j-1];
 			else
 				distance[i][j] = 1 + min(distance[i-1][j-1],distance[i-1][j],distance[i][j-1]);
