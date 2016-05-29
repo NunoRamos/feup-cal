@@ -96,8 +96,6 @@ void UserInterface::readHotels() {
 	}
 
 	assignHotelsToVans();
-
-	cin.get();
 }
 
 void UserInterface::printHotels() {
@@ -146,8 +144,6 @@ void UserInterface::readReservations() {
 			ss.clear();
 		}
 
-		cout << name << " " << nif << " " << hotel << " " << arrival_time
-				<< endl;
 		Passenger* p = new Passenger(name, nif);
 
 		Reservation res(hotels[hotel - 1].node, arrival_time, p);
@@ -299,13 +295,14 @@ void UserInterface::transferMenu() {
 		}
 		this->isPlanned = false;
 	} else
-		cout << "Error! First plan the trip then do the trip!!!\n";
+		cout << "Error! You must plan the transfer before.\n";
 
 	return;
 }
 
 void UserInterface::mainMenu() {
 
+	cout << "\n\n\n------------------------------------"
 	cout << "Welcome!\n";
 	cout << "Please choose an option: \n";
 	cout << "1 - Add Reservation\n";
@@ -331,49 +328,34 @@ void UserInterface::mainMenu() {
 
 	switch (op) {
 	case 1:
-		cout << "\n\n\n";
 		reservationMenu();
-		cout << "\n\n\n";
 		mainMenu();
 		break;
 	case 2:
-		cout << "\n\n\n";
 		printReservations();
-		cout << "\n\n\n";
 		mainMenu();
 		break;
 	case 3:
-		cout << "\n\n\n";
 		assignClientsToVans();
-		cout << "\n\n\n";
 		mainMenu();
 		break;
 	case 4:
-		cout << "\n\n\n";
 		updateCoordinates();
 		transferMenu();
-		cout << "\n\n\n";
 		mainMenu();
 		break;
 	case 5:
-		cout << "\n\n\n";
 		updateCoordinates();
-		cout << minLat << " " << maxLat << " " << minLng << " " << maxLng
-				<< endl;
-
+		cout << minLat << " " << maxLat << " " << minLng << " " << maxLng << endl;
 		displayGraph(empty);
-		getchar();
-		cout << "\n\n\n";
 		mainMenu();
 		break;
 	case 6:
-		//TODO Search for a van by the name of a street through which it will pass
 		searchVanByRoad();
 		mainMenu();
 		break;
 
 	case 7:
-		//TODO Search a van by the name of the clients assigned to it
 		searchVanByClient();
 		mainMenu();
 		break;
@@ -543,15 +525,6 @@ void UserInterface::assignHotelsToVans() {
 		if (!hotels[m].getAssigned())
 			unassignedHotels.push_back(hotels[m]);
 	}
-
-	cout << "There are " << unassignedHotels.size() << " unassigned hotels\n";
-
-	for (unsigned int i = 0; i < vans.size(); i++) {
-		for (unsigned int j = 0; j < vans[i]->hotelZone.size(); j++) {
-			cout << "Hotel " << vans[i]->hotelZone[j].getName()
-					<< " assigned to van " << i << endl;
-		}
-	}
 }
 
 void UserInterface::assignClientsToVans() {
@@ -569,11 +542,12 @@ void UserInterface::assignClientsToVans() {
 				if (vans[i]->hotelZone[j].getNode()->getId()
 						== reservations.top().getDestination()->getId()) {
 					if (vans[i]->passengers.size() < MAX_PASSENGERS) {
+						vans[i]->passengers.push_back(reservations.top());
 						cout << "Passenger "
 								<< reservations.top().getClient()->getName()
 								<< " assigned to van " << i << endl;
-						vans[i]->passengers.push_back(reservations.top());
 						reservations.pop();
+
 					}
 
 					else { //the van is full, the client will wait
@@ -654,12 +628,9 @@ void UserInterface::searchVanByRoad() {
 
 				if (currNode->getId() == currNode->path->adj[m]->getDest()->getId()) {
 
-					cout << "Node: "<<currNode->getId()<<" Edge : " << currNode->path->adj[m]->getRoad()->getID() << endl;
 					roadName = currNode->path->adj[m]->getRoad()->getName();
 
 					if (numStringMatching(name, roadName) != 0) {
-						cout << "Van " << i << " goes to the hotel on road "
-								<< roadName << " - Hotel: "<<vans[i]->getHotels()[j].getName()<<endl; //FIXME debug only, remove
 						exactMatchVans.push_back(i);
 						exactMatches.push_back(roadName);
 						found = true;
@@ -667,7 +638,7 @@ void UserInterface::searchVanByRoad() {
 
 					if (!found) {													//No exact matches found yet
 						int x = editDistance(name, roadName);						//check the edit distance of the current road name
-						if (x < min) {cout<<roadName<<endl << "Edit dist: "<<x<<endl;
+						if (x < min) {
 							min = x;
 							closestMatches.clear();
 							closestMatchVans.clear();
@@ -680,7 +651,6 @@ void UserInterface::searchVanByRoad() {
 						}
 					}
 
-					cout<<"j = "<<j<<" m = "<<m<<endl;
 					break;
 				}
 			}

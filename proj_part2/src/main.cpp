@@ -74,8 +74,6 @@ vector<Node *> readNodes(const char* filename) {
 			}
 
 			newCoord = new Coordinates(lon, lat);
-			//	cout<<"x : "<<x;
-			//cout<<"y : "<<y<<endl;
 			newPoint = new Point(x, y);
 			newNode = new Node(id, newCoord, newPoint);
 			vec.push_back(newNode);
@@ -95,6 +93,10 @@ vector<Road *> readRoads(const char* filename, vector<unsigned long> &ids) {
 
 	vector<Road *> vec;
 	ifstream file;
+
+	ofstream road_dictionary; //part 2
+
+	file.open(filename);
 
 	if (!file.is_open())
 		return vec;
@@ -246,13 +248,6 @@ int main(void) {
 		exit(30);
 	}
 
-
-	///////////////////////////////
-	//PART 2
-	///////////////////////////////
-
-
-
 	UserInterface *cli = new UserInterface(graph, MAX_PASSENGERS, source);
 
 	cli->readHotels();
@@ -261,4 +256,3 @@ int main(void) {
 
 	return 0;
 }
-

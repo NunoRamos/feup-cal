@@ -66,9 +66,6 @@ int numStringMatching(string pattern,string text) {
 			q = pi[q];
 			ret++;
 		}
-
-		cout<<pattern[q];
-
 	}
 
 	return ret;
