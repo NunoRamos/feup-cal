@@ -24,31 +24,6 @@ inline void hold(){
 	cin.get();
 }
 
-Hotel::Hotel(string name, Node *n) {
-	this->name = name;
-	this->node = n;
-	this->assigned = false;
-}
-
-bool Hotel::getAssigned() {
-	return this->assigned;
-}
-
-void Hotel::setAssigned(bool flag) {
-	this->assigned = flag;
-}
-
-string Hotel::getName() const {
-	return name;
-}
-
-Node *Hotel::getNode() const {
-	return node;
-}
-
-Van::Van(vector<Hotel> hz) {
-	this->hotelZone = hz;
-}
 
 UserInterface::UserInterface(Graph *g, int maxPassengers, Node *source) {
 	this->graph = g;
@@ -609,10 +584,6 @@ void UserInterface::updateCoordinates() {
 //////////////////////////////////////
 //PART 2
 /////////////////////////////////////
-
-vector<Hotel> Van::getHotels() const {
-	return hotelZone;
-}
 
 void UserInterface::searchVanByRoad() {
 

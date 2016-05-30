@@ -12,6 +12,8 @@
 #include "Passenger.h"
 #include "Reservation.h"
 #include "graphviewer.h"
+#include "Hotel.h"
+#include "Van.h"
 #include <queue>
 
 #define NODES_FILENAME "test_nodes.txt"
@@ -20,62 +22,7 @@
 
 //airport node
 #define SOURCE_NODE_ID 112640154
-#define MAX_PASSENGERS 10
 
-class Hotel {
-	string name;
-	Node *node;
-	bool assigned;
-public:
-	/**
-	 * \brief class constructor
-	 *
-	 * \arg name Name of the Hotel
-	 * \arg n Node that refers to the position of the Hotel
-	 */
-	Hotel(string name, Node *n);
-
-	/**
-	 * \brief checks if the hotel is already assigned to a van
-	 */
-	bool getAssigned();
-
-	/**
-	 * \brief sets the assigned flag to represent the current state of the hotel
-	 */
-	void setAssigned(bool flag);
-
-	/**
-	 * \brief returns the name of the hotel
-	 */
-	string getName() const;
-
-	/**
-	 * \brief returns the node where the hotel is located
-	 */
-	Node *getNode() const;
-	friend class UserInterface;
-};
-
-class Van {
-	vector<Hotel> hotelZone;
-	vector<Reservation> passengers;
-
-public:
-	/**
-	 * \brief basic class constructor
-	 *
-	 * \arg hz vector of hotels to which this van will transfer clients
-	 */
-	Van(vector<Hotel> hz);
-
-	//PART 2
-	/**
-	 * \brief returns the hotels served by the
-	 */
-	vector<Hotel> getHotels() const;
-	friend class UserInterface;
-};
 
 class UserInterface {
 	Graph *graph;
