@@ -21,6 +21,7 @@
 
 inline void hold(){
 	cout<<"\nPress Enter to continue...";
+	cin.ignore();
 	cin.get();
 }
 
@@ -167,10 +168,6 @@ void UserInterface::printReservations() {
 			cout << vans[i]->passengers[j].getDestination()->getId() << endl<<endl;
 		}
 	}
-
-	cout << "Press Enter to Continue...";
-	cin.get();
-
 }
 bool UserInterface::addReservation(Reservation r) {
 	priority_queue<Reservation> temp;
@@ -195,14 +192,14 @@ bool UserInterface::addReservation(Reservation r) {
 	return true;
 }
 
-void UserInterface::reservationMenu() {
+Reservation UserInterface::reservationMenu() {
 	string name;
 	int nif;
 	unsigned int hotel;
 	string arrival_time;
-	ofstream name_dictionary;
 
 	cout << "Reservation Menu\n";
+	cin.ignore(1000,'\n');
 
 	cout << "Insert name: ";
 	getline(cin, name);
@@ -211,15 +208,19 @@ void UserInterface::reservationMenu() {
 	cin >> nif;
 	cin.ignore(1000, '\n');
 
+	Node *hotelNode;
+
 	printHotels();
 	cout << "Choose Destination: ";
 	cin >> hotel;
 	cin.ignore(1000, '\n');
 	while (hotel < 1 || hotel > hotels.size()) {
-		cout << "Please choose a valid hotel: ";
+	cout << "Please choose a valid hotel: ";
 		cin >> hotel;
 		cin.ignore(1000, '\n');
 	}
+
+	hotelNode = hotels[hotel - 1].node;
 
 	cout << "Insert Arrival Time: ";
 	cin >> arrival_time;
@@ -227,9 +228,9 @@ void UserInterface::reservationMenu() {
 
 	Passenger* p = new Passenger(name, nif);
 
-	Reservation res(hotels[hotel - 1].node, arrival_time, p);
+	Reservation res(hotelNode, arrival_time, p);
 
-	addReservation(res);
+	return res;
 }
 
 void UserInterface::transferMenu() {
@@ -320,10 +321,14 @@ void UserInterface::mainMenu() {
 
 	switch (op) {
 	case 1:
-		reservationMenu();
+	{
+		Reservation res;
+		res = reservationMenu();
+		addReservation(res);
 		hold();
 		mainMenu();
 		break;
+	}
 	case 2:
 		printReservations();
 		hold();
@@ -362,7 +367,6 @@ void UserInterface::mainMenu() {
 		cout << "\nGoodBye!\n";
 		exit(0);
 	}
-	cin.get();
 }
 
 void UserInterface::displayGraph(vector<Node *> path) {
@@ -658,14 +662,46 @@ void UserInterface::searchVanByRoad() {
 	}
 
 	else {
-		cout << "No matches found, closest matching strings:\n";
+		cout << "No matches found, closest matching strings (Edit distance = " << min << " ):"<<endl;
 		for (unsigned int m = 0; m < closestMatches.size(); m++) {
 			cout << "Van " << closestMatchVans[m] << " - "<< closestMatches[m] << endl;
 		}
 	}
+	int vanIndex = -1;
+	if((found && exactMatches.size() == 1) || (!found && closestMatches.size() == 1)){
+		cout << "Do you wish to travel in this van? (y/n)";
+		vanIndex = found ? exactMatchVans[0] : closestMatchVans[0];
+	}
+
+	else cout << "Do you wish to travel in one of these vans? (y/n)";
+
+	char op;
+	cin >> op;
+	while(op != 'y' && op != 'Y' && op != 'n' && op!= 'N'){
+		cout << "Please enter a valid option. ";
+		cin >> op;
+	}
+
+	if(op == 'N' || op == 'n')
+		return;
+
+	if(vanIndex == -1){
+		cout << "Van number: ";
+		cin >> vanIndex;
+	}
+
+	Reservation res;
+	res = reservationMenu();
+	if(!putClientInVan(res,vanIndex))
+		cout << "Operation could not be completed\n";
 }
 
 void UserInterface::searchVanByClient(){
+
+	if (!isPlanned){
+		cout << "There are no clients in the vans yet. Please plan the trip before choosing this option\n";
+		return;
+	}
 
 	string name;
 	char tmp[256];
@@ -718,10 +754,59 @@ void UserInterface::searchVanByClient(){
 	}
 
 	else {
-		cout << "No matches found in the vans, closest matching strings: - Edit distance : " << min <<endl;
+		cout << "No matches found in the vans, closest matching strings (Edit distance = " << min << " ):"<<endl;
 		for (unsigned int m = 0; m < closestMatches.size(); m++) {
 			cout << "Van " << closestMatchVans[m] << " - "<< closestMatches[m] << endl;
 		}
 	}
 
+	int vanIndex = -1;
+	if((found && exactMatches.size() == 1) || (!found && closestMatches.size() == 1)){
+		cout << "Do you wish to travel in this van? (y/n)";
+		vanIndex = found ? exactMatchVans[0] : closestMatchVans[0];
+	}
+
+	else cout << "Do you wish to travel in one of these vans? (y/n)";
+
+	char op;
+	cin >> op;
+	while(op != 'y' && op != 'Y' && op != 'n' && op!= 'N'){
+		cout << "Please enter a valid option. ";
+		cin >> op;
+	}
+
+	if(op == 'N' || op == 'n')
+		return;
+
+	if(vanIndex == -1){
+		cout << "Van number: ";
+		cin >> vanIndex;
+	}
+
+	Reservation res;
+	res = reservationMenu();
+	if(!putClientInVan(res,vanIndex))
+		cout << "Operation could not be completed\n";
+}
+
+bool UserInterface::putClientInVan(Reservation client, int vanIndex){
+	if(vanIndex < 0 || vanIndex > vans.size()){
+		cout << "Selected van does not exist.\n";
+		return false;
+	}
+
+	if(vans[vanIndex]->passengers.size() >= MAX_PASSENGERS){
+		cout << "Selected van is full.\n";
+		return false;
+	}
+
+	for(unsigned int i = 0; i < vans[vanIndex]->hotelZone.size(); i++){
+		if(client.getDestination()->getId() == vans[vanIndex]->hotelZone[i].getNode()->getId()){
+			vans[vanIndex]->passengers.push_back(client);
+			return true;
+		}
+	}
+
+	cout << "The van you selected does not go to your destination.\n";
+	return false;
 }

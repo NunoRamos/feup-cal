@@ -70,8 +70,9 @@ public:
 
 	/**
 	 * \brief displays the menu of the reservations
+	 *
 	 */
-	void reservationMenu();
+	Reservation reservationMenu();
 
 	/**
 	 * \brief reads the Hotels from a file and puts them in the hotels vector
@@ -134,6 +135,13 @@ public:
 	 */
 	void searchVanByClient();
 
+	/**
+	 * \brief puts a reservation in a specific van
+	 * \arg client Reservation to place
+	 * \arg vanIndex
+	 * \ret false if client could not be added (van full), else true
+	 */
+	bool putClientInVan(Reservation client, int vanIndex);
 
 };
 
