@@ -12,6 +12,8 @@
 #include "Passenger.h"
 #include "Reservation.h"
 #include "graphviewer.h"
+#include "Hotel.h"
+#include "Van.h"
 #include <queue>
 
 #define NODES_FILENAME "test_nodes.txt"
@@ -20,65 +22,17 @@
 
 //airport node
 #define SOURCE_NODE_ID 112640154
-#define MAX_PASSENGERS 10
 
-class Hotel {
-	string name;
-	Node *node;
-	bool assigned;
-public:
-	/**
-	 * \brief class constructor
-	 *
-	 * \arg name Name of the Hotel
-	 * \arg n Node that refers to the position of the Hotel
-	 */
-	Hotel(string name, Node *n);
-
-	/**
-	 * \brief checks if the hotel is already assigned to a van
-	 */
-	bool getAssigned();
-
-	/**
-	 * \brief sets the assigned flag to represent the current state of the hotel
-	 */
-	void setAssigned(bool flag);
-
-	/**
-	 * \brief returns the name of the hotel
-	 */
-	string getName() const;
-
-	/**
-	 * \brief returns the node where the hotel is located
-	 */
-	Node *getNode() const;
-	friend class UserInterface;
-};
-
-class Van {
-	vector<Hotel*> hotelZone;
-	vector<Reservation> passengers;
-public:
-	/**
-	 * \brief basic class constructor
-	 *
-	 * \arg hz vector of hotels to which this van will transfer clients
-	 */
-	Van(vector<Hotel*> hz);
-
-	friend class UserInterface;
-};
 
 class UserInterface {
 	Graph *graph;
 	priority_queue<Reservation> reservations;
 	vector<Node> destinations;
 	int maxPassengers;
-	vector<Hotel*> hotels;
+	vector<Hotel> hotels;
 	Node *source;
 	vector<Van*> vans;
+	bool isPlanned;
 
 	double maxLat, minLat, maxLng, minLng;
 
@@ -116,8 +70,9 @@ public:
 
 	/**
 	 * \brief displays the menu of the reservations
+	 *
 	 */
-	void reservationMenu();
+	Reservation reservationMenu();
 
 	/**
 	 * \brief reads the Hotels from a file and puts them in the hotels vector
@@ -157,11 +112,37 @@ public:
 	void assignHotelsToVans();
 
 	/**
-	 * \briefs sets a vector of reservations to be satisfied by each van
+	 * \brief sets a vector of reservations to be satisfied by each van
 	 *
 	 * each van has a number < MAX_PASSENGERS of clients to transfer to an hotel that belongs to their zone vector
 	 */
 	void assignClientsToVans();
+
+
+	/////////////////////////////////////////////////////////
+	//PART2
+	/////////////////////////////////////////////////////////
+
+	/**
+	 * \brief prompts the user for the name of a road and searches the vans (using exact and, if it fails, approximate string matching
+	 * to get a list of Vans that pass that road
+	 */
+	void searchVanByRoad();
+
+	/**
+	 * \brief prompts the user for the name of a client and searches the vans (using exact and, if it fails, approximate string matching
+	 * to get a list of Vans that transport clients with that name.
+	 */
+	void searchVanByClient();
+
+	/**
+	 * \brief puts a reservation in a specific van
+	 * \arg client Reservation to place
+	 * \arg vanIndex
+	 * \ret false if client could not be added (van full), else true
+	 */
+	bool putClientInVan(Reservation client, int vanIndex);
+
 };
 
 #endif /* SRC_USERINTERFACE_H_ */

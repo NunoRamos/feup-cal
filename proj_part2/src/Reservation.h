@@ -21,12 +21,14 @@ class Reservation {
 	Passenger *client;
 
 public:
+	Reservation();
 	Reservation(Node *destination, string arrivalTime, Passenger *client);
 	Node *getDestination() const;
 	string getArrivalTime() const;
 	Passenger *getClient() const;
 
 	bool operator <(const Reservation &res) const;
+	void operator= (const Reservation &res);
 
 };
 

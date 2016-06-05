@@ -1,5 +1,11 @@
 #include "Reservation.h"
 
+Reservation::Reservation(){
+	this->destination = NULL;
+	this->arrivalTime = "";
+	this->client = NULL;
+}
+
 Reservation::Reservation(Node *destination, string arrivalTime, Passenger *client){
 	this->destination = destination;
 	this->arrivalTime = arrivalTime;
@@ -36,6 +42,12 @@ bool Reservation::operator <(const Reservation &res1) const
 		return true;
 	else
 		return false;
+}
+
+void Reservation::operator=(const Reservation &res){
+	this->destination = res.destination;
+	this->client = res.client;
+	this->arrivalTime = res.arrivalTime;
 }
 
 
